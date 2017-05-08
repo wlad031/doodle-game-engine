@@ -1,5 +1,9 @@
-#include <iostream>
+#include <easylogging++.h>
+
+INITIALIZE_EASYLOGGINGPP
 
 int main(int argc, const char** argv) {
-    std::cout << "Hello, world!" << std::endl;
+    START_EASYLOGGINGPP(argc, argv);
+
+    LOG(INFO) << "Hello, world!" << std::endl;
 }
