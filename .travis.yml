@@ -1,0 +1,24 @@
+sudo: required
+dist: trusty
+
+script:
+  - g++-6 --version
+  - mkdir build && cd build
+  - cmake ..
+  - make
+
+matrix:
+  include:
+    -
+      os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - george-edison55-precise-backports
+          packages:
+            - build-essential
+            - software-properties-common
+            - g++-6
+            - cmake
+      env: CXX=g++-6
