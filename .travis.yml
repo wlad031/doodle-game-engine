@@ -16,6 +16,8 @@ matrix:
             - software-properties-common
             - g++-6
             - cmake
+            - libboost-all-dev
+            - libglm-dev
       env: CXX=g++-6
 
 before_install:

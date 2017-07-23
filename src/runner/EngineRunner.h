@@ -5,6 +5,9 @@
 
 #include "common/Runnable.hpp"
 
+#include "serialize/JsonSerializer.hpp"
+#include "models/components/Transform.h"
+
 class EngineRunner : public Runnable {
 public:
     void run() override;
