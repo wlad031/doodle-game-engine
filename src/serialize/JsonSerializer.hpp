@@ -13,8 +13,8 @@ namespace serialize {
     public:
 
         template<typename T>
-        static std::string serialize(const T& object) {
-            return json_dto::to_json(object);
+        static std::string serialize(const T& object, bool pretty = false) {
+            return json_dto::to_json(object, pretty);
         }
 
         template<typename T>

@@ -1,4 +1,6 @@
 #pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
+#pragma ide diagnostic ignored "ClangTidyInspection"
 #pragma ide diagnostic ignored "HidingNonVirtualFunction"
 #pragma ide diagnostic ignored "IncompatibleTypes"
 
@@ -19,7 +21,7 @@ namespace math {
             _2(double x, double y) :
                     x(x), y(y) {}
 
-            explicit _2(double x) :
+            _2(double x) :
                     x(x), y(x) {}
 
             _2(std::initializer_list<double> l) {
@@ -44,13 +46,6 @@ namespace math {
             glm::vec2 toGlm() {
                 return glm::vec2(x, y);
             }
-
-            template<typename JSON_IO>
-            void json_io(JSON_IO& io) {
-                io
-                & json::mandatory("x", x)
-                & json::mandatory("y", y);
-            }
         };
 
         class _3 {
@@ -61,7 +56,7 @@ namespace math {
             _3(double x, double y, double z) :
                     x(x), y(y), z(z) {}
 
-            explicit _3(double x) :
+            _3(double x) :
                     x(x), y(x), z(x) {}
 
             _3(std::initializer_list<double> l) {
@@ -94,14 +89,6 @@ namespace math {
             glm::vec3 toGlm() {
                 return glm::vec3(x, y, z);
             }
-
-            template<typename JSON_IO>
-            void json_io(JSON_IO& io) {
-                io
-                & json::mandatory("x", x)
-                & json::mandatory("y", y)
-                & json::mandatory("z", z);
-            }
         };
 
         class _4 {
@@ -112,7 +99,7 @@ namespace math {
             _4(double x, double y, double z, double w) :
                     x(x), y(y), z(z), w(w) {}
 
-            explicit _4(double x) :
+            _4(double x) :
                     x(x), y(x), z(x), w(x) {}
 
             _4(std::initializer_list<double> l) {
@@ -155,15 +142,6 @@ namespace math {
             glm::vec4 toGlm() {
                 return glm::vec4(x, y, z, w);
             }
-
-            template<typename JSON_IO>
-            void json_io(JSON_IO& io) {
-                io
-                & json::mandatory("x", x)
-                & json::mandatory("y", y)
-                & json::mandatory("z", z)
-                & json::mandatory("w", w);
-            }
         };
     }
 
@@ -172,29 +150,56 @@ namespace math {
         class rgb : public vec::_3 {
         public:
             using vec::_3::_3;
-
-            template<typename JSON_IO>
-            void json_io(JSON_IO& io) {
-                io
-                & json::mandatory("r", x)
-                & json::mandatory("g", y)
-                & json::mandatory("b", z);
-            }
         };
 
         class rgba : public vec::_4 {
         public:
             using vec::_4::_4;
-
-            template<typename JSON_IO>
-            void json_io(JSON_IO& io) {
-                io
-                & json::mandatory("r", x)
-                & json::mandatory("g", y)
-                & json::mandatory("b", z)
-                & json::mandatory("a", w);
-            }
         };
+    }
+}
+
+namespace json_dto {
+
+    template<typename JSON_IO>
+    void json_io(JSON_IO& io, math::vec::_2 v) {
+        io
+        & json::mandatory("x", v.x)
+        & json::mandatory("y", v.y);
+    }
+
+    template<typename JSON_IO>
+    void json_io(JSON_IO& io, math::vec::_3 v) {
+        io
+        & json::mandatory("x", v.x)
+        & json::mandatory("y", v.y)
+        & json::mandatory("z", v.z);
+    }
+
+    template<typename JSON_IO>
+    void json_io(JSON_IO& io, math::vec::_4 v) {
+        io
+        & json::mandatory("x", v.x)
+        & json::mandatory("y", v.y)
+        & json::mandatory("z", v.z)
+        & json::mandatory("w", v.w);
+    }
+
+    template<typename JSON_IO>
+    void json_io(JSON_IO& io, math::color::rgb c) {
+        io
+        & json::mandatory("r", c.x)
+        & json::mandatory("g", c.y)
+        & json::mandatory("b", c.z);
+    }
+
+    template<typename JSON_IO>
+    void json_io(JSON_IO& io, math::color::rgba c) {
+        io
+        & json::mandatory("r", c.x)
+        & json::mandatory("g", c.y)
+        & json::mandatory("b", c.z)
+        & json::mandatory("a", c.w);
     }
 }
 
