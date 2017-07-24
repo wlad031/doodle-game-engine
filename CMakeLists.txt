@@ -121,6 +121,7 @@ AUX_SOURCE_DIRECTORY(src/models/components SOURCE_MODELS_COMPONENTS_DIRECTORY)
 
 SET(
         HEADERS_TO_COMPILE
+        src/common/Math.hpp
         src/common/Runnable.hpp
         src/common/Types.hpp
         src/serialize/JsonSerializer.hpp
