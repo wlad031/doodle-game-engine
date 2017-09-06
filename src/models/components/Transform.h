@@ -49,9 +49,9 @@ namespace json_dto {
     template<typename JSON_IO>
     void json_io(JSON_IO& io, model::component::Transform transform) {
         io
-        & json::mandatory("position", transform.position)
-        & json::mandatory("rotation", transform.rotation)
-        & json::mandatory("scale", transform.scale);
+        & json::optional("position", transform.position, math::vec::_3())
+        & json::optional("rotation", transform.rotation, math::vec::_3())
+        & json::optional("scale", transform.scale, math::vec::_3());
     }
 }
 #pragma clang diagnostic pop

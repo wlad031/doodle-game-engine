@@ -117,15 +117,16 @@ AUX_SOURCE_DIRECTORY(src/common SOURCE_COMMON_DIRECTORY)
 AUX_SOURCE_DIRECTORY(src/common/utils SOURCE_COMMON_UTILS_DIRECTORY)
 AUX_SOURCE_DIRECTORY(src/runner SOURCE_RUNNER_DIRECTORY)
 AUX_SOURCE_DIRECTORY(src/serialize SOURCE_SERIALIZE_DIRECTORY)
+AUX_SOURCE_DIRECTORY(src/models SOURCE_MODELS_DIRECTORY)
 AUX_SOURCE_DIRECTORY(src/models/components SOURCE_MODELS_COMPONENTS_DIRECTORY)
+AUX_SOURCE_DIRECTORY(src/models/assets SOURCE_MODELS_ASSETS_DIRECTORY)
 
 SET(
         HEADERS_TO_COMPILE
         src/common/Math.hpp
         src/common/Runnable.hpp
         src/common/Types.hpp
-        src/serialize/JsonSerializer.hpp
-)
+        src/serialize/JsonSerializer.hpp)
 
 SET(
         SOURCE_FILES
@@ -135,8 +136,9 @@ SET(
         ${SOURCE_COMMON_UTILS_DIRECTORY}
         ${SOURCE_RUNNER_DIRECTORY}
         ${SOURCE_SERIALIZE_DIRECTORY}
+        ${SOURCE_MODELS_DIRECTORY}
         ${SOURCE_MODELS_COMPONENTS_DIRECTORY}
-        src/common/Math.hpp)
+        ${SOURCE_MODELS_ASSETS_DIRECTORY})
 
 ADD_EXECUTABLE(
         DoodleGameEngine

@@ -6,7 +6,7 @@
 #include "common/Runnable.hpp"
 
 #include "serialize/JsonSerializer.hpp"
-#include "models/components/Transform.h"
+#include "models/GameObject.h"
 
 class EngineRunner : public Runnable {
 public:
