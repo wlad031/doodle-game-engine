@@ -1,41 +1,47 @@
 #include "Transform.h"
 
-using namespace math;
+#define DEFAULT_POSITION V3(0.0)
+#define DEFAULT_ROTATION V3(0.0)
+#define DEFAULT_SCALE V3(1.0)
 
-#define DEFAULT_POSITION vec::_3(0.0)
-#define DEFAULT_ROTATION vec::_3(0.0)
-#define DEFAULT_SCALE vec::_3(1.0)
+namespace model {
+    namespace component {
 
-model::component::Transform::Transform() :
-        position(DEFAULT_POSITION), rotation(DEFAULT_ROTATION), scale(DEFAULT_SCALE) {}
+        Transform::Transform() :
+                _position(DEFAULT_POSITION), _rotation(DEFAULT_ROTATION), _scale(DEFAULT_SCALE) {}
 
-model::component::Transform::Transform(
-        const vec::_3& position,
-        const vec::_3& rotation,
-        const vec::_3& scale
-) :
-        position(position), rotation(rotation), scale(scale) {}
+        Transform::Transform(
+                const V3& position,
+                const V3& rotation,
+                const V3& scale
+        ) :
+                _position(position), _rotation(rotation), _scale(scale) {}
 
-const vec::_3& model::component::Transform::getPosition() const {
-    return position;
-}
+        const V3& Transform::position() const {
+            return _position;
+        }
 
-void model::component::Transform::setPosition(const vec::_3& position) {
-    Transform::position = position;
-}
+        Transform& Transform::position(const V3& position) {
+            Transform::_position = position;
+            return *this;
+        }
 
-const vec::_3& model::component::Transform::getRotation() const {
-    return rotation;
-}
+        const V3& Transform::rotation() const {
+            return _rotation;
+        }
 
-void model::component::Transform::setRotation(const vec::_3& rotation) {
-    Transform::rotation = rotation;
-}
+        Transform& Transform::rotation(const V3& rotation) {
+            Transform::_rotation = rotation;
+            return *this;
+        }
 
-const vec::_3& model::component::Transform::getScale() const {
-    return scale;
-}
+        const V3& Transform::scale() const {
+            return _scale;
+        }
 
-void model::component::Transform::setScale(const vec::_3& scale) {
-    Transform::scale = scale;
+        Transform& Transform::scale(const V3& scale) {
+            Transform::_scale = scale;
+            return *this;
+        }
+    }
 }

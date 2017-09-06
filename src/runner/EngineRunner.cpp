@@ -2,8 +2,6 @@
 
 void EngineRunner::run() {
 
-    using namespace math;
-
     auto go = model::GameObject();
     auto transform =
             model::component::Transform(V3{1.0, 2.0, 3.0}, V3{5, 1, 2}, V3{10});

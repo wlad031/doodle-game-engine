@@ -28,7 +28,7 @@ namespace model {
         friend void json_dto::json_io(JSON_IO& io, model::GameObject gameObject);
 
     private:
-        Components components;
+        Components _components;
     };
 }
 
@@ -38,10 +38,7 @@ namespace json_dto {
     template<typename JSON_IO>
     void json_io(JSON_IO& io, model::GameObject gameObject) {
         io
-        & json::mandatory(
-                "transforms",
-                gameObject.components.transforms
-        );
+        & json::mandatory("transforms", gameObject._components.transforms);
     }
 }
 #pragma clang diagnostic pop

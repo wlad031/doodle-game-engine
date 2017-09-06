@@ -1,5 +1,7 @@
 #include "GameObject.h"
 
-model::GameObject::Components& model::GameObject::getComponents() {
-    return components;
+namespace model {
+    GameObject::Components& GameObject::getComponents() {
+        return _components;
+    }
 }
