@@ -51,14 +51,14 @@ namespace math {
 namespace json_dto {
 
     template<typename JSON_IO>
-    void json_io(JSON_IO& io, math::vec::_2 v) {
+    void json_io(JSON_IO& io, math::vec::_2& v) {
         io
         & json::mandatory("x", v.x)
         & json::mandatory("y", v.y);
     }
 
     template<typename JSON_IO>
-    void json_io(JSON_IO& io, math::vec::_3 v) {
+    void json_io(JSON_IO& io, math::vec::_3& v) {
         io
         & json::mandatory("x", v.x)
         & json::mandatory("y", v.y)
@@ -66,7 +66,7 @@ namespace json_dto {
     }
 
     template<typename JSON_IO>
-    void json_io(JSON_IO& io, math::vec::_4 v) {
+    void json_io(JSON_IO& io, math::vec::_4& v) {
         io
         & json::mandatory("x", v.x)
         & json::mandatory("y", v.y)
@@ -75,7 +75,7 @@ namespace json_dto {
     }
 
     template<typename JSON_IO>
-    void json_io(JSON_IO& io, math::color::rgb c) {
+    void json_io(JSON_IO& io, math::color::rgb& c) {
         io
         & json::mandatory("r", c.x)
         & json::mandatory("g", c.y)
@@ -83,7 +83,7 @@ namespace json_dto {
     }
 
     template<typename JSON_IO>
-    void json_io(JSON_IO& io, math::color::rgba c) {
+    void json_io(JSON_IO& io, math::color::rgba& c) {
         io
         & json::mandatory("r", c.x)
         & json::mandatory("g", c.y)

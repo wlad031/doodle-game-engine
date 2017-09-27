@@ -13,7 +13,7 @@ namespace model {
 
 namespace json_dto {
     template<typename JSON_IO>
-    void json_io(JSON_IO& io, model::component::Transform transform);
+    void json_io(JSON_IO& io, model::component::Transform& transform);
 }
 
 namespace model {
@@ -32,7 +32,7 @@ namespace model {
             Transform& scale(const V3& scale);
 
             template<typename JSON_IO>
-            friend void json_dto::json_io(JSON_IO& io, model::component::Transform transform);
+            friend void json_dto::json_io(JSON_IO& io, model::component::Transform& transform);
 
         private:
             V3 _position;
@@ -46,11 +46,11 @@ namespace model {
 #pragma ide diagnostic ignored "IncompatibleTypes"
 namespace json_dto {
     template<typename JSON_IO>
-    void json_io(JSON_IO& io, model::component::Transform transform) {
+    void json_io(JSON_IO& io, model::component::Transform& transform) {
         io
-        & json::optional("position", transform._position, V3())
-        & json::optional("rotation", transform._rotation, V3())
-        & json::optional("scale", transform._scale, V3());
+        & json::mandatory("position", transform._position)
+        & json::mandatory("rotation", transform._rotation)
+        & json::mandatory("scale", transform._scale);
     }
 }
 #pragma clang diagnostic pop

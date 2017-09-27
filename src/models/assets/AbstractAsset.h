@@ -4,8 +4,6 @@
 namespace model {
     namespace asset {
         class AbstractAsset {
-        private:
-
         };
     }
 }

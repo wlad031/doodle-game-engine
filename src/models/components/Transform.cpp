@@ -1,7 +1,7 @@
 #include "Transform.h"
 
-#define DEFAULT_POSITION V3(0.0)
-#define DEFAULT_ROTATION V3(0.0)
+#define DEFAULT_POSITION V3(0.0f)
+#define DEFAULT_ROTATION V3(0.0f)
 #define DEFAULT_SCALE V3(1.0)
 
 namespace model {

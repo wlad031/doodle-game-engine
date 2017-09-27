@@ -1,0 +1,9 @@
+#ifndef DOODLEGAMEENGINE_ABSTRACTRENDERER_H
+#define DOODLEGAMEENGINE_ABSTRACTRENDERER_H
+
+namespace renderer {
+    class AbstractRenderer {
+    };
+}
+
+#endif //DOODLEGAMEENGINE_ABSTRACTRENDERER_H

@@ -11,24 +11,23 @@ namespace model {
 
 namespace json_dto {
     template<typename JSON_IO>
-    void json_io(JSON_IO& io, model::GameObject gameObject);
+    void json_io(JSON_IO& io, model::GameObject& gameObject);
 }
 
 namespace model {
 
     class GameObject {
     public:
-        struct Components {
-            std::vector<component::Transform> transforms;
-        };
+        GameObject();
 
-        Components& getComponents();
+        const component::Transform& transform() const;
+        GameObject& transform(const component::Transform& transform);
 
         template<typename JSON_IO>
-        friend void json_dto::json_io(JSON_IO& io, model::GameObject gameObject);
+        friend void json_dto::json_io(JSON_IO& io, model::GameObject& gameObject);
 
     private:
-        Components _components;
+        component::Transform _transform;
     };
 }
 
@@ -36,9 +35,9 @@ namespace model {
 #pragma ide diagnostic ignored "IncompatibleTypes"
 namespace json_dto {
     template<typename JSON_IO>
-    void json_io(JSON_IO& io, model::GameObject gameObject) {
+    void json_io(JSON_IO& io, model::GameObject& gameObject) {
         io
-        & json::mandatory("transforms", gameObject._components.transforms);
+        & json::mandatory("transform", gameObject._transform);
     }
 }
 #pragma clang diagnostic pop
