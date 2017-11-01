@@ -1,14 +1,14 @@
-#ifndef DOODLEGAMEENGINE_GLFWWINDOWMANAGER_H
-#define DOODLEGAMEENGINE_GLFWWINDOWMANAGER_H
+#ifndef DOODLEGAMEENGINE_STANDALONE_GLFWWINDOWMANAGER_H
+#define DOODLEGAMEENGINE_STANDALONE_GLFWWINDOWMANAGER_H
 
 #include <GLFW/glfw3.h>
 
 #include <boost/format.hpp>
 
-#include "AbstractWindowManager.h"
+#include "common/Logger.hpp"
 
 namespace standalone {
-    class GlfwWindowManager : public AbstractWindowManager {
+    class GlfwWindowManager {
     public:
         static GlfwWindowManager& instance();
 
@@ -16,13 +16,13 @@ namespace standalone {
             int major, minor, rev;
         } glfwVersion;
 
-        void init() override;
-        void window() override;
-        void loop() override;
+        void init();
+        void window();
+        void loop();
 
-        void keyboardCallback(std::function<void(int, int, int, int)> function) override;
-        void cursorPositionCallback(std::function<void(double, double)> function) override;
-        void reshapeCallback(std::function<void(int, int)> function) override;
+        void keyboardCallback(std::function<void(int, int, int, int)> function);
+        void cursorPositionCallback(std::function<void(double, double)> function);
+        void reshapeCallback(std::function<void(int, int)> function);
 
     private:
         GlfwWindowManager();
@@ -33,4 +33,4 @@ namespace standalone {
     };
 }
 
-#endif //DOODLEGAMEENGINE_GLFWWINDOWMANAGER_H
+#endif //DOODLEGAMEENGINE_STANDALONE_GLFWWINDOWMANAGER_H

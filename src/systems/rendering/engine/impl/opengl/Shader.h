@@ -1,0 +1,114 @@
+#ifndef DOODLEGAMEENGINE_SYSTEMS_RENDERING_ENGINE_IMPL_OPENGL_SHADER_H
+#define DOODLEGAMEENGINE_SYSTEMS_RENDERING_ENGINE_IMPL_OPENGL_SHADER_H
+
+#include <glbinding/gl/gl.h>
+
+#include "common/exceptions/Exception.hpp"
+#include "common/files/File.h"
+
+////////////////////////////////////////////////////////////////////////////////
+/////                    Representation of the OpenGL shader               /////
+////////////////////////////////////////////////////////////////////////////////
+
+namespace systems {
+namespace rendering {
+namespace engine {
+namespace opengl {
+
+///// =============================================== InvalidShaderTypeException
+class InvalidShaderTypeException : public Exception {
+public:
+    ///// --------------------------------------------------------- constructors
+    explicit InvalidShaderTypeException() = default;
+
+    ///// ----------------------------------------------------------------- what
+    const char* what() const throw() override {
+        std::string s = "Invalid shader type";
+        return s.c_str();
+    }
+};
+
+///// =================================================================== Shader
+class Shader {
+public:
+
+    ///// ---------------------------------------------------------- shader type
+    enum class Type {
+        VERTEX,
+        FRAGMENT,
+        GEOMETRY
+    };
+
+    ///// --------------------------------------------------------- constructors
+    explicit Shader(Type type) : _type(matchShaderType(type)) {
+        _id = gl::glCreateShader(_type);
+    }
+
+    ///// ------------------------------------------------------ factory methods
+    static std::unique_ptr<Shader> fromFile(
+            Type type,
+            const std::shared_ptr<files::File>& file
+    );
+    static std::unique_ptr<Shader> fromString(
+            Type type,
+            const std::string& string
+    );
+
+    ///// -------------------------------------------------------------- compile
+    void compile();
+
+    ///// ----------------------------------------------------------- getInfoLog
+    const std::string& getInfoLog();
+
+    ///// --------------------------------------------------------------- reload
+    void reload();
+
+    ///// -------------------------------------------------------------- getters
+    uint getId() const { return _id; }
+    Type getType() const { return matchShaderType(_type); }
+    bool getCompileStatus() const { return static_cast<bool>(_compileStatus); }
+    const std::string& getSource() const { return _source; }
+    const std::shared_ptr<files::File>& getFile() const { return _file; }
+
+private:
+
+    gl::GLuint    _id;
+    gl::GLenum    _type;
+    gl::GLboolean _compileStatus;
+    std::string   _source;
+
+    std::shared_ptr<files::File> _file;
+
+    bool _initializedFromFile;
+    bool _fileLoaded;
+
+private:
+
+    ///// ------------------------------------------------------------- loadFile
+    void loadFile();
+
+    ///// ------------------------------------------------------ matchShaderType
+    static gl::GLenum matchShaderType(Type type) {
+        switch (type) {
+            case Type::VERTEX   : return gl::GL_VERTEX_SHADER;
+            case Type::FRAGMENT : return gl::GL_FRAGMENT_SHADER;
+            case Type::GEOMETRY : return gl::GL_GEOMETRY_SHADER;
+        }
+    }
+
+    static Type matchShaderType(gl::GLenum type) {
+        switch (type) {
+            case gl::GL_VERTEX_SHADER   : return Type::VERTEX;
+            case gl::GL_FRAGMENT_SHADER : return Type::FRAGMENT;
+            case gl::GL_GEOMETRY_SHADER : return Type::GEOMETRY;
+            default : throw InvalidShaderTypeException();
+        }
+    }
+};
+
+}  // namespace opengl
+}  // namespace engine
+}  // namespace rendering
+}  // namespace systems
+
+#endif //DOODLEGAMEENGINE_SYSTEMS_RENDERING_ENGINE_IMPL_OPENGL_SHADER_H

@@ -10,3 +10,4 @@ CTestTestfile.cmake
 [Bb]uild/
 .idea/
 cmake-build-debug/
+idea-run.sh

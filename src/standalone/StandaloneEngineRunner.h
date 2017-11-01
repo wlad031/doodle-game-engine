@@ -1,20 +1,19 @@
-#ifndef DOODLEGAMEENGINE_STANDALONEENGINERUNNER_H
-#define DOODLEGAMEENGINE_STANDALONEENGINERUNNER_H
+#ifndef DOODLEGAMEENGINE_STANDALONE_STANDALONEENGINERUNNER_H
+#define DOODLEGAMEENGINE_STANDALONE_STANDALONEENGINERUNNER_H
 
-#include <easylogging++.h>
-
+#include "common/Logger.hpp"
 #include "common/Runnable.hpp"
 
 #include "GlfwWindowManager.h"
 
-#include "serialize/JsonSerializer.hpp"
+#include "common/serialize/JsonSerializer.hpp"
 #include "models/GameObject.h"
 
 namespace standalone {
     class StandaloneEngineRunner : public Runnable {
     public:
-        void run() override;
+        virtual void run() override;
     };
 }
 
-#endif //DOODLEGAMEENGINE_STANDALONEENGINERUNNER_H
+#endif //DOODLEGAMEENGINE_STANDALONE_STANDALONEENGINERUNNER_H

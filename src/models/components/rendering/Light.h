@@ -1,15 +1,13 @@
-#ifndef DOODLEGAMEENGINE_LIGHT_H
-#define DOODLEGAMEENGINE_LIGHT_H
-
-#include "models/components/AbstractComponent.h"
+#ifndef DOODLEGAMEENGINE_MODELS_COMPONENTS_RENDERING_LIGHT_H
+#define DOODLEGAMEENGINE_MODELS_COMPONENTS_RENDERING_LIGHT_H
 
 namespace model {
     namespace component {
         namespace rendering {
-            class Light : public AbstractComponent {
+            class Light {
             };
         }
     }
 }
 
-#endif //DOODLEGAMEENGINE_LIGHT_H
+#endif //DOODLEGAMEENGINE_MODELS_COMPONENTS_RENDERING_LIGHT_H

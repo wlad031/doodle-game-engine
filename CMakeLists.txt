@@ -1,6 +1,13 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.3.0)
 PROJECT(DoodleGameEngine)
 
+FUNCTION(PRINT_VARIABLES)
+    GET_CMAKE_PROPERTY(_variableNames VARIABLES)
+    FOREACH (_variableName ${_variableNames})
+        MESSAGE(STATUS "${_variableName}=${${_variableName}}")
+    ENDFOREACH ()
+ENDFUNCTION()
+
 IF (UNIX AND NOT APPLE)
     SET(LINUX TRUE)
 ENDIF ()
@@ -64,29 +71,40 @@ STRING(
         LINKER_FLAGS
 
         " ${CMAKE_EXE_LINKER_FLAGS} "
-        " -lglfw                    "
+        " -lGLU                     "
+        " -pthread                  "
+        " -lncurses                 "
 )
 SET(CMAKE_EXE_LINKER_FLAGS "${LINKER_FLAGS}")
 
 # Compiler options
-STRING(
-        CONCAT
-        COMPILER_FLAGS
+IF (APPLE)
+    STRING(
+            CONCAT
+            COMPILER_FLAGS
+            " ${CMAKE_CXX_FLAGS} "
 
-        " ${CMAKE_CXX_FLAGS} "
-        " -std=c++17         "
-        " -w                 "
-        " -lglfw             "
-)
+            " -w                 "
+    )
+ELSEIF (LINUX)
+    STRING(
+            CONCAT
+            COMPILER_FLAGS
+            " ${CMAKE_CXX_FLAGS} "
+
+            " -std=c++17         "
+            " -w                 "
+    )
+ENDIF ()
+
+SET(CMAKE_EXE_LINKER_FLAGS "${LINKER_FLAGS}")
 SET(CMAKE_CXX_FLAGS "${COMPILER_FLAGS}")
 
 # Add external projects
 INCLUDE(ExternalProject)
 
-# Easyloggingpp
 SET(EASYLOGGINGPP_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Easyloggingpp)
 SET(EASYLOGGINGPP_BUILD_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${BUILD_DIRECTORY}/Easyloggingpp)
->>>>>>> Add some classes declarations
 EXTERNALPROJECT_ADD(
         Easyloggingpp
         GIT_REPOSITORY https://github.com/easylogging/easyloggingpp
@@ -101,9 +119,8 @@ EXTERNALPROJECT_ADD(
         -DCMAKE_BUILD_TYPE:STRING=Release
         -DCMAKE_INSTALL_PREFIX:PATH=${EASYLOGGINGPP_BUILD_DIRECTORY}/INSTALL
 )
-<<<<<<< HEAD
 INCLUDE_DIRECTORIES("${EASYLOGGINGPP_INCLUDE}")
-=======
+
 SET(EASYLOGGINGPP_INCLUDE ${CMAKE_BINARY_DIR}/INSTALL/include)
 
 # Assimp
@@ -122,7 +139,6 @@ EXTERNALPROJECT_ADD(Assimp
                     -DCMAKE_BUILD_TYPE:STRING=Release
                     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/INSTALL)
 SET(ASSIMP_INCLUDE ${ASSIMP_BUILD_DIRECTORY}/include)
->>>>>>> Add some classes declarations
 
 # RapidJSON
 SET(RAPID_JSON_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/RapidJSON)
@@ -143,7 +159,6 @@ EXTERNALPROJECT_ADD(
 )
 SET(RAPID_JSON_INCLUDE ${RAPID_JSON_BUILD_DIRECTORY}/include)
 
-# json_dto
 SET(JSON_DTO_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/json_dto)
 EXTERNALPROJECT_ADD(
         json_dto
@@ -158,57 +173,25 @@ EXTERNALPROJECT_ADD(
 )
 SET(JSON_DTO_INCLUDE ${JSON_DTO_BUILD_DIRECTORY}/dev)
 
-# PkgConfig
 FIND_PACKAGE(PkgConfig REQUIRED)
-
-# Boost
+FIND_PACKAGE(Curses REQUIRED)
 FIND_PACKAGE(Boost REQUIRED system filesystem thread timer chrono)
+FIND_PACKAGE(glbinding REQUIRED)
+FIND_PACKAGE(GLFW REQUIRED)
+FIND_PACKAGE(SFML REQUIRED)
+FIND_PACKAGE(Assimp REQUIRED)
+FIND_PACKAGE(Bullet REQUIRED)
 
-# GLFW3
-PKG_SEARCH_MODULE(GLFW REQUIRED glfw3)
-IF (NOT GLFW_FOUND)
-    MESSAGE(ERROR " GLFW not found")
-ENDIF (NOT GLFW_FOUND)
+PRINT_VARIABLES()
 
-# Add source directories
-AUX_SOURCE_DIRECTORY(src SOURCE_DIRECTORY)
-AUX_SOURCE_DIRECTORY(src/common SOURCE_COMMON_DIRECTORY)
-AUX_SOURCE_DIRECTORY(src/common/utils SOURCE_COMMON_UTILS_DIRECTORY)
-AUX_SOURCE_DIRECTORY(src/serialize SOURCE_SERIALIZE_DIRECTORY)
-AUX_SOURCE_DIRECTORY(src/loaders SOURCE_LOADERS_DIRECTORY)
-AUX_SOURCE_DIRECTORY(src/models SOURCE_MODELS_DIRECTORY)
-AUX_SOURCE_DIRECTORY(src/models/components SOURCE_MODELS_COMPONENTS_DIRECTORY)
-AUX_SOURCE_DIRECTORY(src/models/components/mesh SOURCE_MODELS_COMPONENTS_MESH_DIRECTORY)
-AUX_SOURCE_DIRECTORY(src/models/components/rendering SOURCE_MODELS_COMPONENTS_RENDERING_DIRECTORY)
-AUX_SOURCE_DIRECTORY(src/models/assets SOURCE_MODELS_ASSETS_DIRECTORY)
-AUX_SOURCE_DIRECTORY(src/renderers SOURCE_RENDERERS_DIRECTORY)
-AUX_SOURCE_DIRECTORY(src/editor SOURCE_EDITOR_DIRECTORY)
-AUX_SOURCE_DIRECTORY(src/standalone SOURCE_STANDALONE_DIRECTORY)
-
-SET(
-        HEADERS_TO_COMPILE
-        src/common/Math.hpp
-        src/common/Runnable.hpp
-        src/common/Types.hpp
-        src/serialize/JsonSerializer.hpp
-)
-
-SET(
+# Add sources
+FILE(
+        GLOB_RECURSE
         SOURCE_FILES
-        entrypoint.cpp
-        ${HEADERS_TO_COMPILE}
-        ${SOURCE_COMMON_DIRECTORY}
-        ${SOURCE_COMMON_UTILS_DIRECTORY}
-        ${SOURCE_SERIALIZE_DIRECTORY}
-        ${SOURCE_LOADERS_DIRECTORY}
-        ${SOURCE_MODELS_DIRECTORY}
-        ${SOURCE_MODELS_COMPONENTS_DIRECTORY}
-        ${SOURCE_MODELS_COMPONENTS_MESH_DIRECTORY}
-        ${SOURCE_MODELS_COMPONENTS_RENDERING_DIRECTORY}
-        ${SOURCE_MODELS_ASSETS_DIRECTORY}
-        ${SOURCE_RENDERERS_DIRECTORY}
-        ${SOURCE_EDITOR_DIRECTORY}
-        ${SOURCE_STANDALONE_DIRECTORY}
+
+        "entrypoint.cpp"
+        "src/*.cpp"
+        "src/*.hpp"
 )
 
 ADD_EXECUTABLE(
@@ -220,28 +203,30 @@ TARGET_COMPILE_FEATURES(DoodleGameEngine PUBLIC cxx_std_1z)
 TARGET_INCLUDE_DIRECTORIES(
         DoodleGameEngine INTERFACE
         src/
-        "${PROJECT_BINARY_DIR}"
+        "${PROJECT_BINARY_DIR}    "
 
-        "${Boost_INCLUDE_DIRS}"
-        "${GLFW_INCLUDE_DIRS}"
+        "${Boost_INCLUDE_DIRS}    "
+        "${CURSES_INCLUDE_DIR}    "
+        "${GLFW_INCLUDE_DIR}      "
+        "${SFML_INCLUDE_DIR}      "
+        "${ASSIMP_INCLUDE_DIRS}   "
+        "${BULLET_INCLUDE_DIRS}   "
 
-        "${EASYLOGGINGPP_INCLUDE}"
-        "${ASSIMP_INCLUDE}"
-        "${RAPID_JSON_INCLUDE}"
-        "${JSON_DTO_INCLUDE}"
+        "${EASYLOGGINGPP_INCLUDE} "
+        "${RAPID_JSON_INCLUDE}    "
+        "${JSON_DTO_INCLUDE}      "
 )
-
-LINK_DIRECTORIES(
-        ${Boost_LIBRARY_DIRS}
-        ${GLFW_LIBDIR}
-)
-
-ADD_DEPENDENCIES(DoodleGameEngine Easyloggingpp)
 
 TARGET_LINK_LIBRARIES(
         DoodleGameEngine
 
         ${Boost_LIBRARIES}
+        ${GLFW_LIBRARIES}
+        ${SFML_LIBRARIES}
+        ${BULLET_LIBRARIES}
+        /usr/lib/x86_64-linux-gnu/libassimp.so # TODO: change!
+        ${CURSES_LIBRARIES}
+        glbinding::glbinding
 )
 
 ADD_DEPENDENCIES(

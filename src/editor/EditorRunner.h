@@ -1,15 +1,14 @@
-#ifndef DOODLEGAMEENGINE_EDITORRUNNER_H
-#define DOODLEGAMEENGINE_EDITORRUNNER_H
+#ifndef DOODLEGAMEENGINE_EDITOR_EDITORRUNNER_H
+#define DOODLEGAMEENGINE_EDITOR_EDITORRUNNER_H
 
-#include <easylogging++.h>
-
+#include "common/Logger.hpp"
 #include "common/Runnable.hpp"
 
 namespace editor {
     class EditorRunner : public Runnable {
     public:
-        void run() override;
+        virtual void run() override;
     };
 }
 
-#endif //DOODLEGAMEENGINE_EDITORRUNNER_H
+#endif //DOODLEGAMEENGINE_EDITOR_EDITORRUNNER_H

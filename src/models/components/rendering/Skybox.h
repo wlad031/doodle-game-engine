@@ -1,15 +1,13 @@
-#ifndef DOODLEGAMEENGINE_SKYBOX_H
-#define DOODLEGAMEENGINE_SKYBOX_H
-
-#include "models/components/AbstractComponent.h"
+#ifndef DOODLEGAMEENGINE_MODELS_COMPONENTS_RENDERING_SKYBOX_H
+#define DOODLEGAMEENGINE_MODELS_COMPONENTS_RENDERING_SKYBOX_H
 
 namespace model {
-    namespace component {
-        namespace rendering {
-            class Skybox : public AbstractComponent {
-            };
-        }
-    }
-}
+namespace component {
+namespace rendering {
+class Skybox {
+};
+}  // namespace rendering
+}  // namespace component
+}  // namespace model
 
-#endif //DOODLEGAMEENGINE_SKYBOX_H
+#endif //DOODLEGAMEENGINE_MODELS_COMPONENTS_RENDERING_SKYBOX_H

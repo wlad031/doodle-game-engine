@@ -1,64 +1,90 @@
-#ifndef DOODLEGAMEENGINE_MESHFILTER_H
-#define DOODLEGAMEENGINE_MESHFILTER_H
+#ifndef DOODLEGAMEENGINE_MODELS_COMPONENTS_MESH_MESHFILTER_H
+#define DOODLEGAMEENGINE_MODELS_COMPONENTS_MESH_MESHFILTER_H
 
-#include "common/Math.hpp"
+#include <utility>
 
-#include "models/components/AbstractComponent.h"
+#include "common/files/File.h"
+#include "common/math/Math.h"
 
-namespace model {
-    namespace component {
-        namespace mesh {
-            class MeshFilter;
-        }
-    }
-}
+///// ------------------------------------------------ class forward declaration
+namespace models {
+namespace components {
+namespace mesh {
+class MeshFilter;
+}  // namespace mesh
+}  // namespace components
+}  // namespace models
 
+///// ------------------------------ JSON serialization rule forward declaration
 namespace json_dto {
-    template<typename JSON_IO>
-    void json_io(JSON_IO& io, model::component::mesh::MeshFilter meshFilter);
-}
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
+template<typename JSON_IO>
+void json_io(
+        JSON_IO& io,
+        models::components::mesh::MeshFilter& meshFilter // NOLINT
+);
+#pragma clang diagnostic pop
+}  // namespace json_dto
 
-namespace model {
-    namespace component {
-        namespace mesh {
+////////////////////////////////////////////////////////////////////////////////
+/////                    MeshFilter component declaration                  /////
+////////////////////////////////////////////////////////////////////////////////
 
-            class MeshFilter : public AbstractComponent {
-            public:
+namespace models {
+namespace components {
+namespace mesh {
 
-            private:
+///// =============================================================== MeshFilter
+class MeshFilter {
+public:
 
-                class MeshEntry {
-                public:
-                    bool hasVertices();
-                    bool hasTexCoords();
-                    bool hasNormals();
-                    bool hasTangentsAndBitangents();
-                    bool hasIndices();
+    ///// --------------------------------------------------------- constructors
+    MeshFilter() = default;
+    explicit MeshFilter(std::shared_ptr<files::File> file) :
+            _file(std::move(file)) {}
 
-                private:
-                    std::vector<float>        _vertices;
-                    std::vector<float>        _texCoords;
-                    std::vector<float>        _normals;
-                    std::vector<float>        _tangents;
-                    std::vector<float>        _bitangents;
-                    std::vector<unsigned int> _indices;
-                };
+    ///// -------------------------------------------------------------- getters
+    const std::shared_ptr<files::File>& getFile() const { return _file; }
 
-                std::vector<MeshEntry> _meshEntries;
-            };
-        }
+    ///// -------------------------------------------------------------- setters
+    void setFile(const std::shared_ptr<files::File>& file) {
+        _file = file;
     }
-}
+
+    ///// ---------------------------------------------- JSON serialization rule
+    template<typename JSON_IO>
+    friend void
+    json_dto::json_io(
+            JSON_IO& io,
+            models::components::mesh::MeshFilter& meshFilter
+    );
+
+private:
+    std::shared_ptr<files::File> _file;
+};
+
+}  // namespace mesh
+}  // namespace components
+}  // namespace models
+
+///// ================================================= JSON serialization rules
+namespace json_dto {
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "IncompatibleTypes"
-namespace json_dto {
-    template<typename JSON_IO>
-    void json_io(JSON_IO& io, model::component::mesh::MeshFilter meshFilter) {
-        io;
-//        & json::optional("scale", transform.scale, math::vec::_3());
-    }
-}
-#pragma clang diagnostic pop
+#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 
-#endif //DOODLEGAMEENGINE_MESHFILTER_H
+template<typename JSON_IO>
+void json_io(
+        JSON_IO& io,
+        models::components::mesh::MeshFilter& meshFilter
+) {
+    io
+    & json::mandatory("file", meshFilter._file);
+}
+
+#pragma clang diagnostic pop
+}  // namespace json_dto
+
+#endif //DOODLEGAMEENGINE_MODELS_COMPONENTS_MESH_MESHFILTER_H
