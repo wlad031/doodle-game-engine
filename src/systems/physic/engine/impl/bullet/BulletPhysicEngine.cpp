@@ -21,12 +21,9 @@ BulletPhysicEngine::BulletPhysicEngine() {
     broadphase = new btDbvtBroadphase();
 
     // Set up the collision configuration and dispatcher
-    collisionConfiguration =
-                                            new btDefaultCollisionConfiguration();
+    collisionConfiguration = new btDefaultCollisionConfiguration();
 
-    dispatcher = new btCollisionDispatcher(
-            collisionConfiguration
-    );
+    dispatcher = new btCollisionDispatcher(collisionConfiguration);
 
     // The actual physics solver
     solver = new btSequentialImpulseConstraintSolver();
@@ -45,47 +42,26 @@ BulletPhysicEngine::BulletPhysicEngine() {
             .getObjects();
 
     for (auto&& physicObject : pObjects) {
-        btBoxShape* boxCollisionShape = new btBoxShape(btVector3(1, 1, 1));
-
-        btDefaultMotionState* motionstate = new btDefaultMotionState(btTransform(
-                btQuaternion(1, 1, 1, 1),
-                btVector3(1, 1, 1)
-        ));
-
-        btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(
-                1000,                  // mass, in kg. 0 -> Static object, will never move.
-                motionstate,
-                boxCollisionShape,  // collision shape of body
-                btVector3(1, 0, 0)    // local inertia
-        );
-
-        btRigidBody* rigidBody = new btRigidBody(rigidBodyCI);
-
-        rigidBody->setCollisionFlags(rigidBody->getCollisionFlags() |
-                                     btCollisionObject::CF_KINEMATIC_OBJECT);
-        rigidBody->setActivationState(DISABLE_DEACTIVATION);
-
-        _objects[physicObject] = rigidBody;
-        _world->addRigidBody(rigidBody);
+        _objects[physicObject] = std::make_shared<BulletObject>(_world);
     }
 }
 
 void BulletPhysicEngine::simulate() {
     std::this_thread::sleep_for(std::chrono::milliseconds(250));
-    _world->stepSimulation((btScalar) (1.0 / 60.0));
+    _world->stepSimulation((btScalar) (1.0 / 60.0), 10);
 
     for (auto&& item : _objects) {
         auto object = item.first;
-        auto rigidBody = item.second;
+        auto bulletObject = item.second;
 
-        auto v = rigidBody->getCenterOfMassPosition();
+        auto v = bulletObject->getBtRigidBody()->getCenterOfMassPosition();
 
         btTransform transform;
-        rigidBody->getMotionState()->getWorldTransform(transform);
+        bulletObject->getBtRigidBody()->getMotionState()->getWorldTransform(transform);
 
-        LOG(DEBUG) << " x = " << v.getX();
-        LOG(DEBUG) << " Y = " << v.getY();
-        LOG(DEBUG) << " Z = " << v.getZ();
+//        LOG(DEBUG) << " x = " << transform.getOrigin().getX();
+        LOG(DEBUG) << " Y = " << transform.getOrigin().getY();
+//        LOG(DEBUG) << " Z = " << transform.getOrigin().getZ();
     }
 }
 

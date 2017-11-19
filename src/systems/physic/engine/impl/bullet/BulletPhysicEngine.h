@@ -7,8 +7,8 @@
 #include <bullet/btBulletDynamicsCommon.h>
 
 #include "systems/physic/scene/PhysicObject.h"
-
 #include "systems/physic/engine/PhysicEngine.h"
+#include "systems/physic/engine/impl/bullet/BulletObject.h"
 
 namespace systems {
 namespace physic {
@@ -37,7 +37,7 @@ private:
 
     std::map<
             std::shared_ptr<systems::physic::scene::PhysicObject>,
-            btRigidBody*
+            std::shared_ptr<BulletObject>
     > _objects;
 };
 

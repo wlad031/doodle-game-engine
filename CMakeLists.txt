@@ -189,7 +189,7 @@ FILE(
         GLOB_RECURSE
         SOURCE_FILES
 
-        "entrypoint.cpp"
+        "src/entrypoint.cpp"
         "src/*.cpp"
         "src/*.hpp"
 )
