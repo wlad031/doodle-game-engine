@@ -5,6 +5,8 @@
 
 #include <bullet/btBulletDynamicsCommon.h>
 
+#include "systems/physic/scene/PhysicObject.h"
+
 namespace systems {
 namespace physic {
 namespace engine {
@@ -13,27 +15,20 @@ namespace bullet {
 class BulletObject {
 public:
 
-    explicit BulletObject(btDiscreteDynamicsWorld* world);
+    explicit BulletObject(
+            const std::shared_ptr<systems::physic::scene::PhysicObject>&
+            physicObject
+    );
 
-    ~BulletObject() {
-        _world->removeRigidBody(_btRigidBody);
-        delete _btRigidBody->getMotionState();
-        delete _btCollisionShape;
-        delete _btMotionState;
-        delete _btConstructionInfo;
-        delete _btRigidBody;
-    }
-
-    btRigidBody* getBtRigidBody() { return _btRigidBody; }
+    const std::shared_ptr<btRigidBody>& getBtRigidBody()
+    { return _btRigidBody; }
 
 private:
 
-    btCollisionShape* _btCollisionShape;
-    btDefaultMotionState* _btMotionState;
-    btRigidBody::btRigidBodyConstructionInfo* _btConstructionInfo;
-    btRigidBody* _btRigidBody;
-
-    btDiscreteDynamicsWorld* _world;
+    std::shared_ptr<btCollisionShape> _btCollisionShape;
+    std::shared_ptr<btDefaultMotionState> _btMotionState;
+    std::shared_ptr<btRigidBody::btRigidBodyConstructionInfo> _btConstructionInfo;
+    std::shared_ptr<btRigidBody> _btRigidBody;
 };
 
 }  // namespace bullet

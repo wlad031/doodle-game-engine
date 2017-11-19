@@ -1,6 +1,8 @@
 #ifndef DOODLEGAMEENGINE_MODELS_COMPONENTS_TRANSFORM_H
 #define DOODLEGAMEENGINE_MODELS_COMPONENTS_TRANSFORM_H
 
+#include <mutex>
+
 #include "common/math/Math.h"
 
 ///// ------------------------------------------------ class forward declaration
@@ -47,14 +49,33 @@ public:
         _scale(scale) {}
 
     ///// -------------------------------------------------------------- getters
-    const math::vec::v3& getPosition() const { return _position; }
-    const math::vec::v3& getScale()    const { return _rotation; }
-    const math::vec::v3& getRotation() const { return _scale;    }
+    const math::vec::v3& getPosition() const {
+        return _position;
+    }
+
+    const math::vec::v3& getScale() const {
+        return _rotation;
+    }
+
+    const math::vec::v3& getRotation() const {
+        return _scale;
+    }
 
     ///// -------------------------------------------------------------- setters
-    void setPosition(const math::vec::v3& position) { _position = position; }
-    void setRotation(const math::vec::v3& rotation) { _rotation = rotation; }
-    void setScale(const math::vec::v3& scale)       { _scale = scale;       }
+    void setPosition(const math::vec::v3& position) {
+        std::unique_lock<std::mutex> lock(_mtx);
+        _position = position;
+    }
+
+    void setRotation(const math::vec::v3& rotation) {
+        std::unique_lock<std::mutex> lock(_mtx);
+        _rotation = rotation;
+    }
+
+    void setScale(const math::vec::v3& scale) {
+        std::unique_lock<std::mutex> lock(_mtx);
+        _scale = scale;
+    }
 
     ///// ---------------------------------------------- JSON serialization rule
     template<typename JSON_IO>
@@ -65,6 +86,8 @@ private:
     math::vec::v3 _position;
     math::vec::v3 _rotation;
     math::vec::v3 _scale;
+
+    std::mutex _mtx; // TODO; check out synchronization
 };
 
 }  // namespace components

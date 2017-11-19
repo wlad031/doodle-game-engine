@@ -1,42 +1,50 @@
 #include "BulletObject.h"
 
+#include "systems/physic/engine/impl/bullet/utils/Converters.h"
+
 namespace systems {
 namespace physic {
 namespace engine {
 namespace bullet {
 
-BulletObject::BulletObject(btDiscreteDynamicsWorld* world) {
-    _world = world;
+BulletObject::BulletObject(
+        const std::shared_ptr<systems::physic::scene::PhysicObject>&
+        physicObject
+) {
+    auto transform = physicObject->getGameObject()->getTransform();
+    auto rigidBody = physicObject->getGameObject()->getRigidBody();
 
-    _btCollisionShape = new btSphereShape(1);
+    _btCollisionShape = std::make_shared<btSphereShape>(1); // TODO: implement
 
-    _btMotionState = new btDefaultMotionState(
+    _btMotionState = std::make_shared<btDefaultMotionState>(
             btTransform(
-                    btQuaternion(0, 0, 0, 1),
-                    btVector3(0, 50, 0)
+                    btQuaternion(0, 0, 0, 1), // TODO: implement
+                    utils::toBullet(transform->getPosition())
             )
     );
 
-    btScalar mass = 1;
-    btVector3 fallInertia(0, 0, 0);
+    btScalar  mass = rigidBody->getMass();
+    btVector3 fallInertia(0, 0, 0); // TODO: implement
     _btCollisionShape->calculateLocalInertia(mass, fallInertia);
 
-    _btConstructionInfo = new btRigidBody::btRigidBodyConstructionInfo(
-            mass,                  // mass, in kg. 0 -> Static object, will never move.
-            _btMotionState,
-            _btCollisionShape,  // collision shape of body
-            fallInertia    // local inertia
+    _btConstructionInfo = std::make_shared<
+            btRigidBody::btRigidBodyConstructionInfo
+    >(
+            mass,
+            &*_btMotionState,
+            &*_btCollisionShape,
+            fallInertia
     );
 
-    _btRigidBody = new btRigidBody(*_btConstructionInfo);
+    _btRigidBody = std::make_shared<btRigidBody>(*_btConstructionInfo);
+
+    _btRigidBody->setIgnoreCollisionCheck(nullptr, true); // TODO: implement
 
 //    _btRigidBody->setCollisionFlags(
 //            _btRigidBody->getCollisionFlags() |
 //            btCollisionObject::CF_KINEMATIC_OBJECT
 //    );
 //    _btRigidBody->setActivationState(DISABLE_DEACTIVATION);
-
-    world->addRigidBody(_btRigidBody);
 }
 
 }  // namespace bullet

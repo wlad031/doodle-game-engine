@@ -6,9 +6,10 @@
 
 #include <bullet/btBulletDynamicsCommon.h>
 
-#include "systems/physic/scene/PhysicObject.h"
 #include "systems/physic/engine/PhysicEngine.h"
 #include "systems/physic/engine/impl/bullet/BulletObject.h"
+#include "systems/physic/engine/impl/bullet/utils/Converters.h"
+#include "systems/physic/scene/PhysicObject.h"
 
 namespace systems {
 namespace physic {
@@ -23,17 +24,11 @@ public:
     void simulate() override;
 
 private:
-    btBroadphaseInterface* broadphase;
-
-    // Set up the collision configuration and dispatcher
-    btDefaultCollisionConfiguration* collisionConfiguration;
-
-    btCollisionDispatcher* dispatcher;
-
-    // The actual physics solver
-    btSequentialImpulseConstraintSolver* solver;
-
-    btDiscreteDynamicsWorld* _world;
+    std::shared_ptr<btBroadphaseInterface>               _btBroadphase;
+    std::shared_ptr<btDefaultCollisionConfiguration>     _btConfig;
+    std::shared_ptr<btCollisionDispatcher>               _btDispatcher;
+    std::shared_ptr<btSequentialImpulseConstraintSolver> _btSolver;
+    std::shared_ptr<btDiscreteDynamicsWorld>             _btDynamicWorld;
 
     std::map<
             std::shared_ptr<systems::physic::scene::PhysicObject>,

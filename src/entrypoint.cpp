@@ -109,9 +109,12 @@ public:
         auto gameObject = std::make_shared<models::GameObject>();
         auto meshFilter = std::make_shared<models::components::mesh::MeshFilter>();
         auto transform = std::make_shared<models::components::Transform>();
+        auto rigidBody = std::make_shared<models::components::physic::RigidBody>();
         meshFilter->setFile(std::make_shared<files::File>("/home/wlad031/Downloads/Blonde Elexis - nude/BlondeElexis-nude.obj"));
+        rigidBody->setMass(5);
         gameObject->setMeshFilter(meshFilter);
         gameObject->setTransform(transform);
+        gameObject->setRigidBody(rigidBody);
 
         auto renderingObject = systems::rendering::scene::RenderingScene::instance().createObject(gameObject);
         auto physicObject = systems::physic::scene::PhysicScene::instance().createObject(gameObject);
