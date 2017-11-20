@@ -1,5 +1,5 @@
-#ifndef DOODLEGAMEENGINE_RIGIDBODY_H
-#define DOODLEGAMEENGINE_RIGIDBODY_H
+#ifndef DOODLEGAMEENGINE_MODELS_COMPONENTS_PHYSIC_RIGIDBODY_H
+#define DOODLEGAMEENGINE_MODELS_COMPONENTS_PHYSIC_RIGIDBODY_H
 
 ///// ------------------------------------------------ class forward declaration
 namespace models {
@@ -90,4 +90,4 @@ void json_io(
 #pragma clang diagnostic pop
 }  // namespace json_dto
 
-#endif //DOODLEGAMEENGINE_RIGIDBODY_H
+#endif //DOODLEGAMEENGINE_MODELS_COMPONENTS_PHYSIC_RIGIDBODY_H

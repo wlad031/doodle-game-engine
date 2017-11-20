@@ -8,8 +8,7 @@ namespace engine {
 namespace bullet {
 
 BulletObject::BulletObject(
-        const std::shared_ptr<systems::physic::scene::PhysicObject>&
-        physicObject
+        std::shared_ptr<systems::physic::scene::PhysicObject> physicObject
 ) {
     auto transform = physicObject->getGameObject()->getTransform();
     auto rigidBody = physicObject->getGameObject()->getRigidBody();

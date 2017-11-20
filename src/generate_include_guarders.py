@@ -2,7 +2,7 @@ import os
 import sys
 
 if __name__ == "__main__":
-    walk_dir = "src/"
+    walk_dir = "."
     project = "DOODLEGAMEENGINE"
     ifndef = "#ifndef "
     define = "#define "

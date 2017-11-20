@@ -1,5 +1,5 @@
-#ifndef DOODLEGAMEENGINE_SYSTEMS_RENDERING_ENGINE_IMPL_OPENGL_GRAPHICOBJECT_H
-#define DOODLEGAMEENGINE_SYSTEMS_RENDERING_ENGINE_IMPL_OPENGL_GRAPHICOBJECT_H
+#ifndef DOODLEGAMEENGINE_SYSTEMS_RENDERING_ENGINE_IMPL_OPENGL_OPENGLOBJECT_H
+#define DOODLEGAMEENGINE_SYSTEMS_RENDERING_ENGINE_IMPL_OPENGL_OPENGLOBJECT_H
 
 #include <map>
 
@@ -30,15 +30,13 @@ class OpenGlObject {
 public:
 
     explicit OpenGlObject(
-            const std::shared_ptr<
-                    systems::rendering::scene::components::MeshEntry
-            >& meshEntry
+            std::shared_ptr<systems::rendering::scene::components::MeshEntry> 
+            meshEntry
     );
 
     void render(
-            const std::shared_ptr<
-                    systems::rendering::engine::opengl::OpenGlProgram
-            >& shaderProgram
+            std::shared_ptr<systems::rendering::engine::opengl::OpenGlProgram> 
+            shaderProgram
     );
 
 private:
@@ -62,4 +60,4 @@ private:
 }  // namespace rendering
 }  // namespace systems
 
-#endif //DOODLEGAMEENGINE_SYSTEMS_RENDERING_ENGINE_IMPL_OPENGL_GRAPHICOBJECT_H
+#endif //DOODLEGAMEENGINE_SYSTEMS_RENDERING_ENGINE_IMPL_OPENGL_OPENGLOBJECT_H

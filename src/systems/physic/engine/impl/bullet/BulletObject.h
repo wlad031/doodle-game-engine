@@ -1,5 +1,5 @@
-#ifndef DOODLEGAMEENGINE_BULLETOBJECT_H
-#define DOODLEGAMEENGINE_BULLETOBJECT_H
+#ifndef DOODLEGAMEENGINE_SYSTEMS_PHYSIC_ENGINE_IMPL_BULLET_BULLETOBJECT_H
+#define DOODLEGAMEENGINE_SYSTEMS_PHYSIC_ENGINE_IMPL_BULLET_BULLETOBJECT_H
 
 #include <memory>
 
@@ -16,8 +16,7 @@ class BulletObject {
 public:
 
     explicit BulletObject(
-            const std::shared_ptr<systems::physic::scene::PhysicObject>&
-            physicObject
+            std::shared_ptr<systems::physic::scene::PhysicObject> physicObject
     );
 
     const std::shared_ptr<btRigidBody>& getBtRigidBody()
@@ -36,4 +35,4 @@ private:
 }  // namespace physic
 }  // namespace systems
 
-#endif //DOODLEGAMEENGINE_BULLETOBJECT_H
+#endif //DOODLEGAMEENGINE_SYSTEMS_PHYSIC_ENGINE_IMPL_BULLET_BULLETOBJECT_H

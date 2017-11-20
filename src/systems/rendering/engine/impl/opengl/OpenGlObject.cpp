@@ -8,9 +8,8 @@ namespace engine {
 namespace opengl {
 
 OpenGlObject::OpenGlObject(
-        const std::shared_ptr<
-                systems::rendering::scene::components::MeshEntry
-        >& meshEntry
+        std::shared_ptr<systems::rendering::scene::components::MeshEntry> 
+        meshEntry
 ) {
 
     _nVertices      = meshEntry->getNVertices();
@@ -90,9 +89,8 @@ OpenGlObject::OpenGlObject(
 }
 
 void OpenGlObject::render(
-        const std::shared_ptr<
-                systems::rendering::engine::opengl::OpenGlProgram
-        >& shaderProgram
+        std::shared_ptr<systems::rendering::engine::opengl::OpenGlProgram> 
+        shaderProgram
 ) {
     unsigned int positionAttributeId  = 0;
     unsigned int texCoordAttributeId  = 0;
