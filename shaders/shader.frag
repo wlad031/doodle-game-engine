@@ -15,5 +15,5 @@ out vec4 Color;
 void main() {
     vec4 f = vec4(Vertex.TexCoord * 0.001, 0, 0) + vec4(Vertex.Normal * 0.001, 0) + vec4(Vertex.Tangent * 0.001, 0) + vec4(Vertex.Bitangent * 0.001, 0);
 
-    Color = vec4(0.5) + f * 0.0001;
+    Color = vec4(1.0,0.0,0.0,1.0) + f * 0.0001;
 }

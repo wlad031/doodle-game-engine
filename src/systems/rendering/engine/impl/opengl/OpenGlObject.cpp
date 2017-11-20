@@ -1,4 +1,4 @@
-#include "GraphicObject.h"
+#include "OpenGlObject.h"
 
 #include <glbinding/gl/gl.h>
 
@@ -7,7 +7,7 @@ namespace rendering {
 namespace engine {
 namespace opengl {
 
-GraphicObject::GraphicObject(
+OpenGlObject::OpenGlObject(
         const std::shared_ptr<
                 systems::rendering::scene::components::MeshEntry
         >& meshEntry
@@ -89,9 +89,9 @@ GraphicObject::GraphicObject(
     gl::glBindVertexArray(0);
 }
 
-void GraphicObject::render(
+void OpenGlObject::render(
         const std::shared_ptr<
-                systems::rendering::engine::opengl::ShaderProgram
+                systems::rendering::engine::opengl::OpenGlProgram
         >& shaderProgram
 ) {
     unsigned int positionAttributeId  = 0;

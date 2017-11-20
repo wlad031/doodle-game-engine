@@ -6,10 +6,11 @@
 #include <map>
 #include <thread>
 #include <string>
-#include <easylogging++.h>
 
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string.hpp>
+
+#include "common/Logger.hpp"
 
 #include "NCurses.h"
 #include "Window.h"

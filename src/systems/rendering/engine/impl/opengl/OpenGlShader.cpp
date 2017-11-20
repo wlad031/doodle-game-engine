@@ -1,6 +1,7 @@
-#include "Shader.h"
+#include "OpenGlShader.h"
 
 #include "common/Logger.hpp"
+#include "OpenGlUtils.h"
 
 namespace systems {
 namespace rendering {
@@ -9,28 +10,28 @@ namespace opengl {
 
 ///// ---------------------------------------------------------- factory methods
 
-std::unique_ptr<Shader> Shader::fromFile(
-        Shader::Type type,
+std::unique_ptr<OpenGlShader> OpenGlShader::fromFile(
+        OpenGlShader::Type type,
         const std::shared_ptr<files::File>& file
 ) {
-    auto shader = std::make_unique<Shader>(type);
+    auto shader = std::make_unique<OpenGlShader>(type);
     shader->_file                = file;
     shader->_initializedFromFile = true;
     shader->loadFile();
     return shader;
 }
 
-std::unique_ptr<Shader> Shader::fromString(
-        Shader::Type type,
+std::unique_ptr<OpenGlShader> OpenGlShader::fromString(
+        OpenGlShader::Type type,
         const std::string& string
 ) {
-    auto shader = std::make_unique<Shader>(type);
+    auto shader = std::make_unique<OpenGlShader>(type);
     shader->_source = string;
     return shader;
 }
 
 ///// ------------------------------------------------------------------ compile
-void Shader::compile() {
+void OpenGlShader::compile() {
     if (_initializedFromFile && !_fileLoaded) {
         throw Exception("Shader is 'FileInitialized', but file wasn't loaded");
     }
@@ -41,38 +42,20 @@ void Shader::compile() {
 
     gl::glGetShaderiv(_id, gl::GL_COMPILE_STATUS, &_compileStatus);
     if (_compileStatus == gl::GL_FALSE) {
-        gl::GLint maxLength = 0;
-        gl::glGetShaderiv(_id, gl::GL_INFO_LOG_LENGTH, &maxLength);
-
-        std::vector<char> errorLog(static_cast<uint64_t>(maxLength));
-        gl::glGetShaderInfoLog(_id, maxLength, &maxLength, &errorLog[0]);
-
         LOG(ERROR) << std::string("Error compiling shader:\n")
-                      + &(errorLog[0]);
-
+                      + utils::getInfoLog(_id);
         gl::glDeleteShader(_id);
     }
 }
 
-///// --------------------------------------------------------------- getInfoLog
-const std::string& Shader::getInfoLog() {
-    gl::GLint maxLength = 0;
-    gl::glGetShaderiv(_id, gl::GL_INFO_LOG_LENGTH, &maxLength);
-
-    std::vector<char> errorLog(static_cast<uint64_t>(maxLength));
-    gl::glGetShaderInfoLog(_id, maxLength, &maxLength, &errorLog[0]);
-
-    return std::string(errorLog.begin(), errorLog.end());
-}
-
 ///// ------------------------------------------------------------------- reload
-void Shader::reload() {
+void OpenGlShader::reload() {
     loadFile();
     compile();
 }
 
 ///// ----------------------------------------------------------------- loadFile
-void Shader::loadFile() {
+void OpenGlShader::loadFile() {
     if (!_initializedFromFile) {
         throw Exception(
                 "Shader isn't 'FileInitialized', but loadFile() was called"

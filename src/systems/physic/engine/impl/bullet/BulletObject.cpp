@@ -1,6 +1,6 @@
 #include "BulletObject.h"
 
-#include "systems/physic/engine/impl/bullet/utils/Converters.h"
+#include "BulletUtils.h"
 
 namespace systems {
 namespace physic {

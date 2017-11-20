@@ -16,10 +16,10 @@ namespace engine {
 namespace opengl {
 
 ///// =============================================== InvalidShaderTypeException
-class InvalidShaderTypeException : public Exception {
+class InvalidOpenGlShaderTypeException : public Exception {
 public:
     ///// --------------------------------------------------------- constructors
-    explicit InvalidShaderTypeException() = default;
+    explicit InvalidOpenGlShaderTypeException() = default;
 
     ///// ----------------------------------------------------------------- what
     const char* what() const throw() override {
@@ -29,7 +29,7 @@ public:
 };
 
 ///// =================================================================== Shader
-class Shader {
+class OpenGlShader {
 public:
 
     ///// ---------------------------------------------------------- shader type
@@ -40,25 +40,25 @@ public:
     };
 
     ///// --------------------------------------------------------- constructors
-    explicit Shader(Type type) : _type(matchShaderType(type)) {
+    explicit OpenGlShader(Type type) :
+            _type(matchShaderType(type)),
+            _fileLoaded(false),
+            _initializedFromFile(false) {
         _id = gl::glCreateShader(_type);
     }
 
     ///// ------------------------------------------------------ factory methods
-    static std::unique_ptr<Shader> fromFile(
+    static std::unique_ptr<OpenGlShader> fromFile(
             Type type,
             const std::shared_ptr<files::File>& file
     );
-    static std::unique_ptr<Shader> fromString(
+    static std::unique_ptr<OpenGlShader> fromString(
             Type type,
             const std::string& string
     );
 
     ///// -------------------------------------------------------------- compile
     void compile();
-
-    ///// ----------------------------------------------------------- getInfoLog
-    const std::string& getInfoLog();
 
     ///// --------------------------------------------------------------- reload
     void reload();
@@ -79,8 +79,8 @@ private:
 
     std::shared_ptr<files::File> _file;
 
-    bool _initializedFromFile;
-    bool _fileLoaded;
+    bool _initializedFromFile {};
+    bool _fileLoaded {};
 
 private:
 
@@ -101,7 +101,7 @@ private:
             case gl::GL_VERTEX_SHADER   : return Type::VERTEX;
             case gl::GL_FRAGMENT_SHADER : return Type::FRAGMENT;
             case gl::GL_GEOMETRY_SHADER : return Type::GEOMETRY;
-            default : throw InvalidShaderTypeException();
+            default :throw InvalidOpenGlShaderTypeException();
         }
     }
 };

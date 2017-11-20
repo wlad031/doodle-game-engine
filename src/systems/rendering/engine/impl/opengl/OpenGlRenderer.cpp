@@ -1,6 +1,6 @@
 #include "OpenGlRenderer.h"
 
-#include <easylogging++.h>
+#include "common/Logger.hpp"
 
 #include <glbinding/Binding.h>
 #include <glbinding/ContextInfo.h>
@@ -37,6 +37,27 @@ OpenGlRenderer::OpenGlRenderer() {
             }
     );
 
+    glbinding::Binding::CreateProgram.setAfterCallback(
+            [](gl::GLuint id) {
+                LOG(INFO) << "Created OpenGL program: " << id;
+            }
+    );
+    glbinding::Binding::CreateShader.setAfterCallback(
+            [](gl::GLuint id, gl::GLenum /*type*/) {
+                LOG(INFO) << "Created OpenGL shader: " << id;
+            }
+    );
+    glbinding::Binding::DeleteProgram.setAfterCallback(
+            [](gl::GLuint id) {
+                LOG(INFO) << "Deleted OpenGL program: " << id;
+            }
+    );
+    glbinding::Binding::DeleteShader.setAfterCallback(
+            [](gl::GLuint id) {
+                LOG(INFO) << "Deleted OpenGL shader: " << id;
+            }
+    );
+
     auto rObjects = systems::rendering::scene::RenderingScene::instance()
             .getObjects();
 
@@ -46,7 +67,7 @@ OpenGlRenderer::OpenGlRenderer() {
 
             if (_objects.find(renderingObject) == _objects.end())
                 _objects[renderingObject] =
-                        std::vector<GraphicObject>();
+                        std::vector<OpenGlObject>();
 
             _objects[renderingObject].emplace_back(meshEntry);
         }

@@ -3,9 +3,7 @@
 
 #include <map>
 
-#include <glbinding/gl/gl.h>
-
-#include "Shader.h"
+#include "OpenGlShader.h"
 #include "common/Named.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -18,14 +16,14 @@ namespace engine {
 namespace opengl {
 
 ///// ============================================================ ShaderProgram
-class ShaderProgram : public Named {
+class OpenGlProgram : public Named {
 public:
 
     ///// --------------------------------------------------------- constructors
-    ShaderProgram();
+    OpenGlProgram();
 
     ///// --------------------------------------------------------- attachShader
-    void attachShader(const std::shared_ptr<Shader>& shader);
+    void attachShader(std::shared_ptr<OpenGlShader> shader);
 
     ///// ----------------------------------------------------------- addUniform
     void addUniform(const std::string& uniform);

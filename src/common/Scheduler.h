@@ -1,7 +1,7 @@
 #ifndef DOODLEGAMEENGINE_COMMON_SCHEDULER_H
 #define DOODLEGAMEENGINE_COMMON_SCHEDULER_H
 
-#include <easylogging++.h>
+#include "common/Logger.hpp"
 
 #include "common/ThreadPool.hpp"
 

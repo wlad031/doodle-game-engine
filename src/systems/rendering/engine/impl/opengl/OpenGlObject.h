@@ -3,7 +3,7 @@
 
 #include <map>
 
-#include "ShaderProgram.h"
+#include "OpenGlProgram.h"
 
 #include "systems/rendering/scene/components/MeshEntry.h"
 
@@ -26,10 +26,10 @@ enum Buffers {
     INDEX_BUFFER
 };
 
-class GraphicObject {
+class OpenGlObject {
 public:
 
-    explicit GraphicObject(
+    explicit OpenGlObject(
             const std::shared_ptr<
                     systems::rendering::scene::components::MeshEntry
             >& meshEntry
@@ -37,7 +37,7 @@ public:
 
     void render(
             const std::shared_ptr<
-                    systems::rendering::engine::opengl::ShaderProgram
+                    systems::rendering::engine::opengl::OpenGlProgram
             >& shaderProgram
     );
 

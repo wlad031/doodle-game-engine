@@ -2,11 +2,6 @@
 
 namespace standalone {
 
-GlfwWindowManager& GlfwWindowManager::instance() {
-    static GlfwWindowManager _instance;
-    return _instance;
-}
-
 GlfwWindowManager::GlfwWindowManager() :
         _monitorId(), _videoMode(), _windowId() {
 }
@@ -14,14 +9,20 @@ GlfwWindowManager::GlfwWindowManager() :
 void GlfwWindowManager::init() {
     int glfwInitCode = glfwInit();
 
+    glfwSetErrorCallback([](int code, const char* msg) {
+        LOG(ERROR) << "GLFW error: code = " << code << "; " << msg;
+    });
+
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    glfwGetVersion(&glfwVersion.major, &glfwVersion.minor, &glfwVersion.rev);
+    if (glfwInitCode != 1) throw GlfwException(glfwInitCode);
+
+    glfwGetVersion(&_version.major, &_version.minor, &_version.rev);
     LOG(INFO) << boost::format("GLFW version: %1%.%2%.%3%")
-                 % glfwVersion.major % glfwVersion.minor % glfwVersion.rev;
+                 % _version.major % _version.minor % _version.rev;
 }
 
 void GlfwWindowManager::window() {
@@ -34,14 +35,15 @@ void GlfwWindowManager::window() {
     glfwMakeContextCurrent(_windowId);
 }
 
-void GlfwWindowManager::loop() {
+void GlfwWindowManager::loop(std::function<void()> function) {
     while (glfwWindowShouldClose(_windowId) == 0) {
+        function();
         glfwSwapBuffers(_windowId);
         glfwPollEvents();
     }
 }
 
-void GlfwWindowManager::keyboardCallback(
+void GlfwWindowManager::setKeyboardCallback(
         std::function<void(int, int, int, int)> function
 ) {
 //        glfwSetKeyCallback(
@@ -51,7 +53,7 @@ void GlfwWindowManager::keyboardCallback(
 //        );
 }
 
-void GlfwWindowManager::cursorPositionCallback(
+void GlfwWindowManager::setCursorPositionCallback(
         std::function<void(
                 double,
                 double
@@ -66,7 +68,7 @@ void GlfwWindowManager::cursorPositionCallback(
 }
 
 void
-GlfwWindowManager::reshapeCallback(std::function<void(int, int)> function) {
+GlfwWindowManager::setReshapeCallback(std::function<void(int, int)> function) {
 //        glfwSetWindowSizeCallback(
 //                _windowId, [&function](GLFWwindow* w, int width, int height) {
 //                    function(width, height);
@@ -74,4 +76,4 @@ GlfwWindowManager::reshapeCallback(std::function<void(int, int)> function) {
 //        );
 }
 
-}
+} // namespace standalone

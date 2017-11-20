@@ -39,5 +39,5 @@ void main() {
     Vertex.Tangent = normalize(tangent.xyz);
     Vertex.Bitangent = normalize(bitangent.xyz);
 
-    gl_Position = mvpMatrix * vec4(Position, 1.0);
+    gl_Position = vec4(Position, 1.0);
 }

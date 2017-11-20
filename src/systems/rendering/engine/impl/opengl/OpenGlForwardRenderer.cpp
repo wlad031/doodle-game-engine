@@ -11,22 +11,22 @@ namespace opengl {
 
 OpenGlForwardRenderer::OpenGlForwardRenderer() : OpenGlRenderer() {
 
-    auto vs = Shader::fromFile(
-            Shader::Type::VERTEX,
+    auto vs = OpenGlShader::fromFile(
+            OpenGlShader::Type::VERTEX,
             std::make_shared<files::File>(
                     "/home/wlad031/Documents/doodle-game-engine/shaders/shader.vert"
             )
     );
     vs->compile();
-    auto fs = Shader::fromFile(
-            Shader::Type::FRAGMENT,
+    auto fs = OpenGlShader::fromFile(
+            OpenGlShader::Type::FRAGMENT,
             std::make_shared<files::File>(
                     "/home/wlad031/Documents/doodle-game-engine/shaders/shader.frag"
             )
     );
     fs->compile();
 
-    _sp = std::make_shared<ShaderProgram>();
+    _sp = std::make_shared<OpenGlProgram>();
 
     _sp->attachShader(std::move(vs));
     _sp->attachShader(std::move(fs));
@@ -42,12 +42,11 @@ OpenGlForwardRenderer::OpenGlForwardRenderer() : OpenGlRenderer() {
 }
 
 void OpenGlForwardRenderer::render() {
-return;
     _sp->use();
 
     for (auto&& object : _objects) {
         auto renderingObject = object.first;
-        auto graphicObjects  = object.second;
+        auto openGlObject    = object.second;
 
         auto transform       = renderingObject->getGameObject()->getTransform();
         auto transformMatrix = math::mat::m4(1.0);
@@ -71,7 +70,7 @@ return;
                 glm::value_ptr(transformMatrix)
         );
 
-        for (auto&& graphicObject : graphicObjects) {
+        for (auto&& graphicObject : openGlObject) {
             graphicObject.render(_sp);
         }
     }

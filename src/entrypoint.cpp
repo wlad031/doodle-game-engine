@@ -11,11 +11,11 @@
 #include "common/serialize/JsonSerializer.hpp"
 #include "common/Scheduler.h"
 #include "console/Shell.h"
-#include "systems/rendering/engine/impl/opengl/Shader.h"
+#include "systems/rendering/engine/impl/opengl/OpenGlShader.h"
 #include <systems/rendering/RenderSystem.h>
 #include <systems/physic/PhysicSystem.h>
 #include <systems/physic/scene/PhysicScene.h>
-#include "systems/rendering/engine/impl/opengl/GraphicObject.h"
+#include "systems/rendering/engine/impl/opengl/OpenGlObject.h"
 #include "systems/rendering/scene/RenderingScene.h"
 #include "systems/rendering/utils/MeshLoader.h"
 
@@ -42,7 +42,7 @@ public:
 
 namespace systems::rendering::engine::opengl {
 
-    class GraphicObject;
+    class OpenGlObject;
 }
 
 // TODO: 1. refactor #ifdef compile variables (PROJECT_PATHTOCLASS_EXT) done
@@ -97,15 +97,6 @@ public:
 //        auto go1 = serialize::JsonSerializer::deserialize<models::GameObject>(s);
 //        LOG(INFO) << serialize::JsonSerializer::serialize(go1);
 
-        auto thread1 = std::thread(
-                        [&]() {
-                            for (int i = 0;; ++i) {
-                                LOG(INFO) << "log " << i;
-                                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-                            }
-                        }
-                );
-
         auto gameObject = std::make_shared<models::GameObject>();
         auto meshFilter = std::make_shared<models::components::mesh::MeshFilter>();
         auto transform = std::make_shared<models::components::Transform>();
@@ -122,10 +113,9 @@ public:
         auto renderSystem = systems::rendering::RenderSystem::instance();
         auto physicSystem = systems::physic::PhysicSystem::instance();
 
-        auto thread2 = std::thread([&]() { while (true) renderSystem.getTask()(); });
+        auto thread2 = std::thread([&]() { manager.loop(renderSystem.getTask()); });
         auto thread3 = std::thread([&]() { while (true) physicSystem.getTask()(); });
 
-        thread1.join();
         thread2.join();
         thread3.join();
 

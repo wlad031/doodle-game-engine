@@ -1,7 +1,7 @@
 #ifndef DOODLEGAMEENGINE_OPENGLRENDERER_H
 #define DOODLEGAMEENGINE_OPENGLRENDERER_H
 
-#include "GraphicObject.h"
+#include "OpenGlObject.h"
 
 #include "systems/rendering/engine/Renderer.h"
 #include "systems/rendering/scene/RenderingObject.h"
@@ -19,7 +19,7 @@ protected:
 
     std::map<
             std::shared_ptr<systems::rendering::scene::RenderingObject>,
-            std::vector<GraphicObject>
+            std::vector<OpenGlObject>
     > _objects;
 };
 

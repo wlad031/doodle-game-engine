@@ -2,7 +2,7 @@
 
 #include <thread>
 
-#include <easylogging++.h>
+#include "common/Logger.hpp"
 
 #include "systems/physic/scene/PhysicScene.h"
 

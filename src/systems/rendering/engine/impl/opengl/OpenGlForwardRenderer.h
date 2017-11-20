@@ -15,7 +15,7 @@ public:
     void render() override;
 
 private:
-    std::shared_ptr<ShaderProgram> _sp;
+    std::shared_ptr<OpenGlProgram> _sp;
 };
 
 }  // namespace opengl

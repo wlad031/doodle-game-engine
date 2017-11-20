@@ -8,7 +8,7 @@
 
 #include "systems/physic/engine/PhysicEngine.h"
 #include "systems/physic/engine/impl/bullet/BulletObject.h"
-#include "systems/physic/engine/impl/bullet/utils/Converters.h"
+#include "BulletUtils.h"
 #include "systems/physic/scene/PhysicObject.h"
 
 namespace systems {
