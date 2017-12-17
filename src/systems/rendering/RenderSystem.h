@@ -5,7 +5,7 @@
 
 #include "systems/System.h"
 
-#include "systems/rendering/engine/impl/opengl/OpenGlForwardRenderer.h"
+#include "systems/rendering/engine/impl/opengl/forward/OpenGlForwardRenderer.h"
 
 namespace systems {
 namespace rendering {
@@ -23,7 +23,7 @@ public:
 private:
     RenderSystem() = default;
 
-    engine::opengl::OpenGlForwardRenderer _renderer;
+    engine::opengl::forward::OpenGlForwardRenderer _renderer;
 };
 
 }  // namespace rendering

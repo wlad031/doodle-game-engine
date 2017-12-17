@@ -29,53 +29,50 @@ bool MeshEntry::hasNormals()     const { return _hasNormals;     }
 bool MeshEntry::hasTgsAndBitgs() const { return _hasTgsAndBitgs; }
 bool MeshEntry::hasIndices()     const { return _hasIndices;     }
 
-void MeshEntry::setNElements(unsigned int nElements) {
-    _nElements     = nElements;
-}
-void MeshEntry::setNVertices(unsigned int nVertices) {
-    _nVertices     = nVertices;
-}
-void MeshEntry::setNFaces(unsigned int nFaces) {
-    _nFaces        = nFaces;
-}
-void MeshEntry::setMaterialIndex(unsigned int materialIndex) {
-    _materialIndex = materialIndex;
-}
+void MeshEntry::setNElements(unsigned int nElements)
+{ _nElements = nElements; }
 
-void MeshEntry::setVertices(const std::vector<float>& vertices) {
-    _vertices  = vertices;
-}
-void MeshEntry::setTexCoords(const std::vector<float>& texCoords) {
-    _texCoords = texCoords;
-}
-void MeshEntry::setNormals(const std::vector<float>& normals) {
-    _normals   = normals;
-}
-void MeshEntry::setTgs(const std::vector<float>& tgs) {
-    _tgs       = tgs;
-}
-void MeshEntry::setBitgs(const std::vector<float>& bitgs) {
-    _bitgs     = bitgs;
-}
-void MeshEntry::setIndices(const std::vector<unsigned int>& indices) {
-    _indices   = indices;
-}
+void MeshEntry::setNVertices(unsigned int nVertices)
+{ _nVertices = nVertices; }
 
-void MeshEntry::setHasVertices(bool hasVertices) {
-    _hasVertices    = hasVertices;
-}
-void MeshEntry::setHasTexCoords(bool hasTexCoords) {
-    _hasTexCoords   = hasTexCoords;
-}
-void MeshEntry::setHasNormals(bool hasNormals) {
-    _hasNormals     = hasNormals;
-}
-void MeshEntry::setHasTgsAndBitgs(bool hasTgsAndBitgs) {
-    _hasTgsAndBitgs = hasTgsAndBitgs;
-}
-void MeshEntry::setHasIndices(bool hasIndices) {
-    _hasIndices     = hasIndices;
-}
+void MeshEntry::setNFaces(unsigned int nFaces)
+{ _nFaces = nFaces; }
+
+void MeshEntry::setMaterialIndex(unsigned int materialIndex)
+{ _materialIndex = materialIndex; }
+
+void MeshEntry::setVertices(const std::vector<float>& vertices)
+{ _vertices = vertices; }
+
+void MeshEntry::setTexCoords(const std::vector<float>& texCoords)
+{ _texCoords = texCoords; }
+
+void MeshEntry::setNormals(const std::vector<float>& normals)
+{ _normals = normals; }
+
+void MeshEntry::setTgs(const std::vector<float>& tgs)
+{ _tgs = tgs; }
+
+void MeshEntry::setBitgs(const std::vector<float>& bitgs)
+{ _bitgs = bitgs; }
+
+void MeshEntry::setIndices(const std::vector<unsigned int>& indices)
+{ _indices= indices; }
+
+void MeshEntry::setHasVertices(bool hasVertices)
+{ _hasVertices = hasVertices; }
+
+void MeshEntry::setHasTexCoords(bool hasTexCoords)
+{ _hasTexCoords = hasTexCoords; }
+
+void MeshEntry::setHasNormals(bool hasNormals)
+{ _hasNormals = hasNormals; }
+
+void MeshEntry::setHasTgsAndBitgs(bool hasTgsAndBitgs)
+{ _hasTgsAndBitgs = hasTgsAndBitgs; }
+
+void MeshEntry::setHasIndices(bool hasIndices)
+{ _hasIndices = hasIndices; }
 
 }  // namespace components
 }  // namespace scene

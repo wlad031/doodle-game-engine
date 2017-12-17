@@ -17,7 +17,7 @@ namespace json_dto {
 template<typename JSON_IO>
 void json_io(
         JSON_IO& io,
-        models::components::mesh::MeshRenderer& meshRenderer // NOLINT
+        models::components::mesh::MeshRenderer& meshRenderer
 );
 #pragma clang diagnostic pop
 }  // namespace json_dto
@@ -41,8 +41,7 @@ private:
 
     ///// ---------------------------------------------- JSON serialization rule
     template<typename JSON_IO>
-    friend void
-    json_dto::json_io(
+    friend void json_dto::json_io(
             JSON_IO& io,
             models::components::mesh::MeshRenderer& meshRenderer
     );

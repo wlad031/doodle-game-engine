@@ -9,14 +9,12 @@ namespace math {
 namespace vec {
 
 ///// ---------------------------------------------------------- default vectors
-
-const v2& NULL_V2 = v2(0.0);
-const v3& NULL_V3 = v3(0.0);
-const v4& NULL_V4 = v4(0.0);
-
-const v2& UNIT_V2 = v2(1.0);
-const v3& UNIT_V3 = v3(1.0);
-const v4& UNIT_V4 = v4(1.0);
+const v2& NULL_V2     = v2(0.0);
+const v3& NULL_V3     = v3(0.0);
+const v4& NULL_V4     = v4(0.0);
+const v2& IDENTITY_V2 = v2(1.0);
+const v3& IDENTITY_V3 = v3(1.0);
+const v4& IDENTITY_V4 = v4(1.0);
 
 }  // namespace vec
 

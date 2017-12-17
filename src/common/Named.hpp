@@ -3,8 +3,6 @@
 
 #include "common/types/Aliases.hpp"
 
-// TODO: rewrite comments
-
 ////////////////////////////////////////////////////////////////////////////////
 /////             Classes implementing 'Named' functionality               /////
 ////////////////////////////////////////////////////////////////////////////////
@@ -13,15 +11,11 @@
 class Named {
 public:
 
-    ///// --------------------------------------------------------------- getter
-    const Name& getName() const {
-        return _name;
-    }
+    ///// -------------------------------------------------------------- getters
+    const Name& getName() const { return _name; }
 
-    ///// --------------------------------------------------------------- setter
-    void setName(const Name& name) {
-        _name = name;
-    }
+    ///// -------------------------------------------------------------- setters
+    void setName(const Name& name) { _name = name; }
 
 private:
     Name _name;
@@ -32,7 +26,6 @@ class NameGenerator {
 public:
 
     ///// --------------------------------------------------------- constructors
-
     NameGenerator() : NameGenerator(DEFAULT_PREFIX, DEFAULT_SUFFIX) {}
 
     NameGenerator(const std::string& prefix, const std::string& suffix) :

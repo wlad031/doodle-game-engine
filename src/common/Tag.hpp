@@ -1,0 +1,13 @@
+#ifndef DOODLEGAMEENGINE_COMMON_TAG_HPP
+#define DOODLEGAMEENGINE_COMMON_TAG_HPP
+
+#include "Named.hpp"
+
+////////////////////////////////////////////////////////////////////////////////
+/////                          Tag class definition                        /////
+////////////////////////////////////////////////////////////////////////////////
+
+class Tag : public Named {
+};
+
+#endif //DOODLEGAMEENGINE_COMMON_TAG_HPP

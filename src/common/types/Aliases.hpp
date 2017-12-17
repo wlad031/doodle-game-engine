@@ -10,6 +10,7 @@
 #include <glm/glm.hpp>
 
 #include <json_dto/pub.hpp>
+#include <common/math/Math.h>
 
 ///// -------------------------------------------------------- namespace aliases
 namespace json = json_dto;

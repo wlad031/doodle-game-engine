@@ -2,11 +2,13 @@
 #define DOODLEGAMEENGINE_SYSTEMS_RENDERING_ENGINE_IMPL_OPENGL_OPENGLFORWARDRENDERER_H
 
 #include "systems/rendering/engine/impl/opengl/OpenGlRenderer.h"
+#include "shaders/MainShader.h"
 
 namespace systems {
 namespace rendering {
 namespace engine {
 namespace opengl {
+namespace forward {
 
 class OpenGlForwardRenderer : public OpenGlRenderer {
 public:
@@ -15,9 +17,10 @@ public:
     void render() override;
 
 private:
-    std::shared_ptr<OpenGlProgram> _sp;
+    std::shared_ptr<MainShader> _mainShader;
 };
 
+}  // namespace forward
 }  // namespace opengl
 }  // namespace engine
 }  // namespace rendering

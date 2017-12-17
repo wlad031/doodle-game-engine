@@ -17,7 +17,7 @@ public:
         return _instance;
     }
 
-    std::shared_ptr<PhysicObject> createObject(
+    void add(
             const std::shared_ptr<models::GameObject>& gameObject
     );
 

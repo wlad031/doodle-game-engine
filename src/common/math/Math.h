@@ -20,9 +20,9 @@ using v4 = glm::vec4;
 extern const v2& NULL_V2;
 extern const v3& NULL_V3;
 extern const v4& NULL_V4;
-extern const v2& UNIT_V2;
-extern const v3& UNIT_V3;
-extern const v4& UNIT_V4;
+extern const v2& IDENTITY_V2;
+extern const v3& IDENTITY_V3;
+extern const v4& IDENTITY_V4;
 
 }  // namespace vec
 
@@ -71,27 +71,27 @@ namespace json_dto {
 template<typename JSON_IO>
 void json_io(JSON_IO& io, glm::vec2& v) {
     io
-    & json::mandatory("x", v.x)
-    & json::mandatory("y", v.y);
+    & json_dto::mandatory("x", v.x)
+    & json_dto::mandatory("y", v.y);
 }
 
 ///// --------------------------------------------------------------------- vec3
 template<typename JSON_IO>
 void json_io(JSON_IO& io, glm::vec3& v) {
     io
-    & json::mandatory("x", v.x)
-    & json::mandatory("y", v.y)
-    & json::mandatory("z", v.z);
+    & json_dto::mandatory("x", v.x)
+    & json_dto::mandatory("y", v.y)
+    & json_dto::mandatory("z", v.z);
 }
 
 ///// --------------------------------------------------------------------- vec4
 template<typename JSON_IO>
 void json_io(JSON_IO& io, glm::vec4& v) {
     io
-    & json::mandatory("x", v.x)
-    & json::mandatory("y", v.y)
-    & json::mandatory("z", v.z)
-    & json::mandatory("w", v.w);
+    & json_dto::mandatory("x", v.x)
+    & json_dto::mandatory("y", v.y)
+    & json_dto::mandatory("z", v.z)
+    & json_dto::mandatory("w", v.w);
 }
 
 #pragma clang diagnostic pop

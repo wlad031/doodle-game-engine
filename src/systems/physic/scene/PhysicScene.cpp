@@ -4,15 +4,15 @@ namespace systems {
 namespace physic {
 namespace scene {
 
-std::shared_ptr<PhysicObject> PhysicScene::createObject(
+void PhysicScene::add(
         const std::shared_ptr<models::GameObject>& gameObject
 ) {
-    auto physicObject = std::make_shared<PhysicObject>(gameObject);
+    if (gameObject->isPhysic()) {
+        auto physicObject = std::make_shared<PhysicObject>(gameObject);
 
-    gameObject->setPhysicObject(physicObject);
-    _objects.push_back(physicObject);
-
-    return physicObject;
+        gameObject->setPhysicObject(physicObject);
+        _objects.push_back(physicObject);
+    }
 }
 
 }  // namespace scene

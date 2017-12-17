@@ -1,17 +1,14 @@
-#ifndef DOODLEGAMEENGINE_MODELS_COMPONENTS_MESH_MESHFILTER_H
-#define DOODLEGAMEENGINE_MODELS_COMPONENTS_MESH_MESHFILTER_H
+#ifndef DOODLEGAMEENGINE_MODELS_COMPONENTS_PHYSIC_COLLIDER_SPHERECOLLIDER_H
+#define DOODLEGAMEENGINE_MODELS_COMPONENTS_PHYSIC_COLLIDER_SPHERECOLLIDER_H
 
-#include <utility>
-
-#include "common/files/File.h"
-#include "common/math/Math.h"
+#include "AbstractCollider.h"
 
 ///// ------------------------------------------------ class forward declaration
 namespace models {
 namespace components {
-namespace mesh {
-class MeshFilter;
-}  // namespace mesh
+namespace physic {
+class SphereCollider;
+}  // namespace physic
 }  // namespace components
 }  // namespace models
 
@@ -22,50 +19,46 @@ namespace json_dto {
 template<typename JSON_IO>
 void json_io(
         JSON_IO& io,
-        models::components::mesh::MeshFilter& meshFilter
+        models::components::physic::SphereCollider& collider
 );
 #pragma clang diagnostic pop
 }  // namespace json_dto
 
 ////////////////////////////////////////////////////////////////////////////////
-/////                    MeshFilter component declaration                  /////
+/////                  SphereCollider component declaration                /////
 ////////////////////////////////////////////////////////////////////////////////
 
 namespace models {
 namespace components {
-namespace mesh {
+namespace physic {
 
-///// =============================================================== MeshFilter
-class MeshFilter {
+///// =========================================================== SphereCollider
+class SphereCollider : public AbstractCollider {
 public:
 
     ///// --------------------------------------------------------- constructors
-    MeshFilter() = default;
-    explicit MeshFilter(std::shared_ptr<files::File> file) :
-            _file(std::move(file)) {}
+    SphereCollider() = default;
 
     ///// -------------------------------------------------------------- getters
-    const std::shared_ptr<files::File>& getFile() const { return _file; }
+    float getRadius() const { return _radius; }
 
     ///// -------------------------------------------------------------- setters
-    void setFile(const std::shared_ptr<files::File>& file) {
-        _file = file;
-    }
+    void setRadius(float radius) { _radius = radius; }
+
+private:
+    float _radius;
 
     ///// ---------------------------------------------- JSON serialization rule
     template<typename JSON_IO>
     friend void json_dto::json_io(
             JSON_IO& io,
-            models::components::mesh::MeshFilter& meshFilter
+            models::components::physic::SphereCollider& collider
     );
-
-private:
-    std::shared_ptr<files::File> _file;
 };
 
-}  // namespace mesh
-}  // namespace components
-}  // namespace models
+} // namespace physic
+} // namespace components
+} // namespace models
 
 ///// ================================================= JSON serialization rules
 namespace json_dto {
@@ -77,13 +70,12 @@ namespace json_dto {
 template<typename JSON_IO>
 void json_io(
         JSON_IO& io,
-        models::components::mesh::MeshFilter& meshFilter
+        models::components::physic::SphereCollider& collider
 ) {
-    io
-    & json::mandatory("file", meshFilter._file);
+    io;
 }
 
 #pragma clang diagnostic pop
 }  // namespace json_dto
 
-#endif //DOODLEGAMEENGINE_MODELS_COMPONENTS_MESH_MESHFILTER_H
+#endif //DOODLEGAMEENGINE_MODELS_COMPONENTS_PHYSIC_COLLIDER_SPHERECOLLIDER_H

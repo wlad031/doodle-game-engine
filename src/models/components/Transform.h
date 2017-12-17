@@ -17,7 +17,7 @@ namespace json_dto {
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 template<typename JSON_IO>
-void json_io(JSON_IO& io, models::components::Transform& transform); // NOLINT
+void json_io(JSON_IO& io, models::components::Transform& transform);
 #pragma clang diagnostic pop
 }  // namespace json_dto
 
@@ -37,7 +37,7 @@ public:
             Transform(
                     math::vec::NULL_V3,
                     math::vec::NULL_V3,
-                    math::vec::UNIT_V3
+                    math::vec::IDENTITY_V3
             ) {}
 
     Transform(
@@ -47,6 +47,13 @@ public:
     ) : _position(position),
         _rotation(rotation),
         _scale(scale) {}
+
+    Transform(const Transform& that) :
+            Transform(
+                    that.getPosition(),
+                    that.getRotation(),
+                    that.getScale()
+            ) {}
 
     ///// -------------------------------------------------------------- getters
     const math::vec::v3& getPosition() const {
@@ -63,31 +70,32 @@ public:
 
     ///// -------------------------------------------------------------- setters
     void setPosition(const math::vec::v3& position) {
-        std::unique_lock<std::mutex> lock(_mtx);
         _position = position;
     }
 
     void setRotation(const math::vec::v3& rotation) {
-        std::unique_lock<std::mutex> lock(_mtx);
         _rotation = rotation;
     }
 
     void setScale(const math::vec::v3& scale) {
-        std::unique_lock<std::mutex> lock(_mtx);
         _scale = scale;
     }
 
+    const Transform& operator+(const Transform& that);
+
     ///// ---------------------------------------------- JSON serialization rule
     template<typename JSON_IO>
-    friend void
-    json_dto::json_io(JSON_IO& io, models::components::Transform& transform);
+    friend void json_dto::json_io(
+            JSON_IO& io,
+            models::components::Transform& transform
+    );
 
 private:
     math::vec::v3 _position;
     math::vec::v3 _rotation;
     math::vec::v3 _scale;
 
-    std::mutex _mtx; // TODO; check out synchronization
+    std::mutex _mtx; // TODO: synchronization
 };
 
 }  // namespace components

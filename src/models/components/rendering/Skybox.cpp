@@ -1,8 +1,8 @@
 #include "Skybox.h"
 
-namespace model {
-namespace component {
+namespace models {
+namespace components {
 namespace rendering {
 }  // namespace rendering
-}  // namespace component
-}  // namespace model
+}  // namespace components
+}  // namespace models

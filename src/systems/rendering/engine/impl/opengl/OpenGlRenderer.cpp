@@ -1,12 +1,13 @@
 #include "OpenGlRenderer.h"
 
-#include "common/Logger.hpp"
-
 #include <glbinding/Binding.h>
 #include <glbinding/ContextInfo.h>
 #include <glbinding/Meta.h>
 #include <glbinding/Version.h>
 
+#include <glm/gtc/type_ptr.hpp>
+
+#include "common/Logger.hpp"
 #include "systems/rendering/scene/RenderingScene.h"
 
 namespace systems {
@@ -60,6 +61,10 @@ OpenGlRenderer::OpenGlRenderer() {
 
     auto rObjects = systems::rendering::scene::RenderingScene::instance()
             .getObjects();
+    auto cameras  = systems::rendering::scene::RenderingScene::instance()
+            .getCameras();
+    auto lights   = systems::rendering::scene::RenderingScene::instance()
+            .getLights();
 
     for (auto&& renderingObject : rObjects) {
 
@@ -73,6 +78,60 @@ OpenGlRenderer::OpenGlRenderer() {
         }
 
     }
+
+    for (auto&& camera : cameras) {
+        if (camera->getGameObject()->getCamera()->isActive()) {
+            _cameras.push_back(camera);
+        }
+    }
+
+    for (auto&& light : lights) {
+        switch (light->getGameObject()->getLight()->getType()) {
+            case models::components::rendering::Light::Type::DIRECTIONAL:
+                _directionalLights.push_back(light);
+                break;
+            case models::components::rendering::Light::Type::POINT:
+                _pointLights.push_back(light);
+                break;
+            case models::components::rendering::Light::Type::SPOT:
+                _spotLights.push_back(light);
+                break;
+        }
+    }
+}
+
+void OpenGlRenderer::passUniform3fv(
+        gl::GLuint uniformId,
+        const math::vec::v3& vec
+) {
+    gl::glUniform3fv(
+            uniformId,
+            1,
+            glm::value_ptr(vec)
+    );
+}
+
+void OpenGlRenderer::passUniform4fv(
+        gl::GLuint uniformId,
+        const math::vec::v4& vec
+) {
+    gl::glUniform4fv(
+            uniformId,
+            1,
+            glm::value_ptr(vec)
+    );
+}
+
+void OpenGlRenderer::passUniformMatrix4fv(
+        gl::GLuint uniformId,
+        const math::mat::m4& matrix
+) {
+    gl::glUniformMatrix4fv(
+            uniformId,
+            1,
+            gl::GL_FALSE,
+            glm::value_ptr(matrix)
+    );
 }
 
 }  // namespace opengl

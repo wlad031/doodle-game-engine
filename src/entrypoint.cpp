@@ -1,5 +1,7 @@
 #include <glbinding/gl/gl.h>
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "CannotResolve"
 #define GLFW_INCLUDE_NONE
 #include <easylogging++.h>
 #include <stdlib.h>     /* srand, rand */
@@ -15,9 +17,12 @@
 #include <systems/rendering/RenderSystem.h>
 #include <systems/physic/PhysicSystem.h>
 #include <systems/physic/scene/PhysicScene.h>
+#include <glbinding/Binding.h>
 #include "systems/rendering/engine/impl/opengl/OpenGlObject.h"
 #include "systems/rendering/scene/RenderingScene.h"
 #include "systems/rendering/utils/MeshLoader.h"
+
+#include "cmake.h"
 
 INITIALIZE_EASYLOGGINGPP
 
@@ -97,24 +102,89 @@ public:
 //        auto go1 = serialize::JsonSerializer::deserialize<models::GameObject>(s);
 //        LOG(INFO) << serialize::JsonSerializer::serialize(go1);
 
-        auto gameObject = std::make_shared<models::GameObject>();
-        auto meshFilter = std::make_shared<models::components::mesh::MeshFilter>();
-        auto transform = std::make_shared<models::components::Transform>();
-        auto rigidBody = std::make_shared<models::components::physic::RigidBody>();
-        meshFilter->setFile(std::make_shared<files::File>("/home/wlad031/Downloads/Blonde Elexis - nude/BlondeElexis-nude.obj"));
-        rigidBody->setMass(5);
-        gameObject->setMeshFilter(meshFilter);
-        gameObject->setTransform(transform);
-        gameObject->setRigidBody(rigidBody);
+        {
+            auto gameObject = std::make_shared<models::GameObject>();
+            auto transform = std::make_shared<models::components::Transform>();
+            auto camera = std::make_shared<models::components::rendering::Camera>();
 
-        auto renderingObject = systems::rendering::scene::RenderingScene::instance().createObject(gameObject);
-        auto physicObject = systems::physic::scene::PhysicScene::instance().createObject(gameObject);
+            transform->setPosition(math::vec::v3(0.0, 0.0, 5.0));
+            camera->setActive(true);
+            camera->setClippingPlane(models::components::rendering::Camera::ClippingPlane());
+            camera->setFieldOfView(100.0);
 
+            gameObject->setTransform(transform);
+            gameObject->setCamera(camera);
+
+            systems::rendering::scene::RenderingScene::instance().add(gameObject);
+        }
+
+        {
+            auto gameObject = std::make_shared<models::GameObject>();
+            auto transform = std::make_shared<models::components::Transform>();
+            auto light = std::make_shared<models::components::rendering::Light>();
+
+            transform->setPosition(math::vec::v3(0.0, 0.0, 5.0));
+            light->setType(models::components::rendering::Light::Type::DIRECTIONAL);
+            light->setColor(Color());
+
+            gameObject->setTransform(transform);
+            gameObject->setLight(light);
+
+            systems::rendering::scene::RenderingScene::instance().add(gameObject);
+        }
+
+        {
+            auto gameObject = std::make_shared<models::GameObject>();
+            auto meshFilter = std::make_shared<models::components::mesh::MeshFilter>();
+            auto transform = std::make_shared<models::components::Transform>();
+            auto rigidBody = std::make_shared<models::components::physic::RigidBody>();
+            auto sphereCollider = std::make_shared<models::components::physic::SphereCollider>();
+
+            meshFilter->setFile(
+                    std::make_shared<files::File>(
+                            "/home/wlad031/Documents/projects/game-engine/cube/cube.obj"
+                    ));
+            rigidBody->setMass(100);
+            sphereCollider->setRadius(1);
+            transform->setPosition(math::vec::v3(0.0, 3.0, 0.0));
+
+            gameObject->setMeshFilter(meshFilter);
+            gameObject->setTransform(transform);
+            gameObject->setRigidBody(rigidBody);
+            gameObject->setSphereColliders({sphereCollider});
+
+            systems::rendering::scene::RenderingScene::instance().add(gameObject);
+            systems::physic::scene::PhysicScene::instance().add(gameObject);
+        }
+
+        {
+            auto gameObject = std::make_shared<models::GameObject>();
+            auto transform  = std::make_shared<models::components::Transform>();
+            auto boxCollider = std::make_shared<models::components::physic::BoxCollider>();
+            auto rigidBody  = std::make_shared<models::components::physic::RigidBody>();
+
+            rigidBody->setMass(0.01);
+            boxCollider->setSize(math::vec::v3(5.0));
+
+            gameObject->setTransform(transform);
+            gameObject->setBoxColliders({boxCollider});
+            gameObject->setRigidBody(rigidBody);
+        }
+        
         auto renderSystem = systems::rendering::RenderSystem::instance();
         auto physicSystem = systems::physic::PhysicSystem::instance();
 
-        auto thread2 = std::thread([&]() { manager.loop(renderSystem.getTask()); });
-        auto thread3 = std::thread([&]() { while (true) physicSystem.getTask()(); });
+        bool exited = false;
+
+        auto thread2 = std::thread([&]() {
+            glbinding::Binding::useCurrentContext();
+            manager.loop(renderSystem.getTask());
+            exited = true;
+        });
+        auto thread3 = std::thread([&]() {
+            auto task = physicSystem.getTask();
+            while (!exited) task();
+        });
 
         thread2.join();
         thread3.join();
@@ -152,9 +222,9 @@ public:
 int main(int argc, const char** argv) {
     START_EASYLOGGINGPP(argc, argv);
 
-    el::Configurations conf("/home/wlad031/Documents/doodle-game-engine/logging.conf");
+    el::Configurations conf(std::string(PROJECT_DIRECTORY) + "logging.conf");
     el::Loggers::reconfigureLogger("default", conf);
-//    el::Loggers::addFlag(el::LoggingFlag::ColoredTerminalOutput);
+    el::Loggers::addFlag(el::LoggingFlag::ColoredTerminalOutput);
     el::Loggers::reconfigureAllLoggers(conf);
 
     auto engineRunner = std::make_unique<TestRunner>();
@@ -166,3 +236,4 @@ int main(int argc, const char** argv) {
         return 1;
     }
 }
+#pragma clang diagnostic pop

@@ -21,19 +21,21 @@ void OpenGlProgram::attachShader(std::shared_ptr<OpenGlShader> shader) {
 }
 
 ///// --------------------------------------------------------------- addUniform
-void OpenGlProgram::addUniform(const std::string& uniform) {
+gl::GLuint OpenGlProgram::addUniform(const std::string& uniform) {
     auto id = static_cast<gl::GLuint>(
             gl::glGetUniformLocation(_id, uniform.c_str())
     );
     _uniforms.insert({uniform, id});
+    return id;
 }
 
 ///// ------------------------------------------------------------- addAttribute
-void OpenGlProgram::addAttribute(const std::string& attribute) {
+gl::GLuint OpenGlProgram::addAttribute(const std::string& attribute) {
     auto id = static_cast<gl::GLuint>(
             gl::glGetAttribLocation(_id, attribute.c_str())
     );
     _attributes.insert({attribute, id});
+    return _id;
 }
 
 ///// --------------------------------------------------------------------- link

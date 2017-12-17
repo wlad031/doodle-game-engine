@@ -10,10 +10,27 @@ namespace bullet {
 BulletObject::BulletObject(
         std::shared_ptr<systems::physic::scene::PhysicObject> physicObject
 ) {
-    auto transform = physicObject->getGameObject()->getTransform();
-    auto rigidBody = physicObject->getGameObject()->getRigidBody();
+    auto gameObject      = physicObject->getGameObject();
+    auto transform       = gameObject->getTransform();
+    auto rigidBody       = gameObject->getRigidBody();
+    auto boxColliders    = gameObject->getBoxColliders();
+    auto sphereColliders = gameObject->getSphereColliders();
 
-    _btCollisionShape = std::make_shared<btSphereShape>(1); // TODO: implement
+    _btCollisionShape = std::make_shared<btCompoundShape>();
+
+    for (auto&& collider : boxColliders) {
+        btBoxShape shape(utils::toBullet(collider->getSize()));
+        btTransform trans;
+        trans.setOrigin(utils::toBullet(collider->getCenter()));
+        _btCollisionShape->addChildShape(trans, &shape);
+    }
+
+    for (auto&& collider : sphereColliders) {
+        btSphereShape shape(collider->getRadius());
+        btTransform trans;
+        trans.setOrigin(utils::toBullet(collider->getCenter()));
+        _btCollisionShape->addChildShape(trans, &shape);
+    }
 
     _btMotionState = std::make_shared<btDefaultMotionState>(
             btTransform(

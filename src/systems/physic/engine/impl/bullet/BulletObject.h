@@ -24,7 +24,7 @@ public:
 
 private:
 
-    std::shared_ptr<btCollisionShape> _btCollisionShape;
+    std::shared_ptr<btCompoundShape> _btCollisionShape;
     std::shared_ptr<btDefaultMotionState> _btMotionState;
     std::shared_ptr<btRigidBody::btRigidBodyConstructionInfo> _btConstructionInfo;
     std::shared_ptr<btRigidBody> _btRigidBody;

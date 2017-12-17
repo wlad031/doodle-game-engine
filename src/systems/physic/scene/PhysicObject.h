@@ -21,6 +21,11 @@ public:
     const std::shared_ptr<models::GameObject>&
     getGameObject() const { return _gameObject; }
 
+    void update(
+            const math::vec::v3& position,
+            const math::vec::v3& rotation
+    );
+
 private:
     std::shared_ptr<models::GameObject> _gameObject;
 };

@@ -4,6 +4,8 @@
 #include <vector>
 
 #include "RenderingObject.h"
+#include "RenderingCamera.h"
+#include "RenderingLight.h"
 
 namespace systems {
 namespace rendering {
@@ -17,17 +19,24 @@ public:
         return _instance;
     }
 
-    std::shared_ptr<RenderingObject>
-    createObject(const std::shared_ptr<models::GameObject>& gameObject);
+    void add(const std::shared_ptr<models::GameObject>& gameObject);
 
     const std::vector<std::shared_ptr<RenderingObject>>&
     getObjects() const { return _objects; }
+
+    const std::vector<std::shared_ptr<RenderingCamera>>&
+    getCameras() const { return _cameras; }
+
+    const std::vector<std::shared_ptr<RenderingLight>>&
+    getLights() const { return _lights; }
 
 private:
 
     RenderingScene() = default;
 
     std::vector<std::shared_ptr<RenderingObject>> _objects;
+    std::vector<std::shared_ptr<RenderingCamera>> _cameras;
+    std::vector<std::shared_ptr<RenderingLight>> _lights;
 };
 
 }  // namespace scene

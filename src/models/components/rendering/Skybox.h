@@ -1,13 +1,15 @@
 #ifndef DOODLEGAMEENGINE_MODELS_COMPONENTS_RENDERING_SKYBOX_H
 #define DOODLEGAMEENGINE_MODELS_COMPONENTS_RENDERING_SKYBOX_H
 
-namespace model {
-namespace component {
+namespace models {
+namespace components {
 namespace rendering {
+
 class Skybox {
 };
+
 }  // namespace rendering
-}  // namespace component
-}  // namespace model
+}  // namespace components
+}  // namespace models
 
 #endif //DOODLEGAMEENGINE_MODELS_COMPONENTS_RENDERING_SKYBOX_H

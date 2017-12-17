@@ -2,6 +2,7 @@
 #define DOODLEGAMEENGINE_SYSTEMS_RENDERING_ENGINE_IMPL_OPENGL_OPENGLPROGRAM_H
 
 #include <map>
+#include <set>
 
 #include "OpenGlShader.h"
 #include "common/Named.hpp"
@@ -26,10 +27,10 @@ public:
     void attachShader(std::shared_ptr<OpenGlShader> shader);
 
     ///// ----------------------------------------------------------- addUniform
-    void addUniform(const std::string& uniform);
+    gl::GLuint addUniform(const std::string& uniform);
 
     ///// --------------------------------------------------------- addAttribute
-    void addAttribute(const std::string& attribute);
+    gl::GLuint addAttribute(const std::string& attribute);
 
     ///// ----------------------------------------------------------------- link
     void link();

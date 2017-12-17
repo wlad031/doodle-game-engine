@@ -52,6 +52,7 @@ public:
             Type type,
             const std::shared_ptr<files::File>& file
     );
+
     static std::unique_ptr<OpenGlShader> fromString(
             Type type,
             const std::string& string

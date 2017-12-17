@@ -39,6 +39,8 @@ void BulletPhysicEngine::simulate() {
     std::this_thread::sleep_for(std::chrono::milliseconds(100)); // TODO: implement
     _btDynamicWorld->stepSimulation((btScalar) (1.0 / 60.0), 10); // TODO: implement
 
+    // TODO: work with rotation
+
     for (auto&& item : _objects) {
         auto object       = item.first;
         auto bulletObject = item.second;
@@ -48,11 +50,13 @@ void BulletPhysicEngine::simulate() {
                 ->getMotionState()
                 ->getWorldTransform(transform);
 
-        object->getGameObject()->getTransform()->setPosition(utils::fromBullet(transform.getOrigin()));
+        object->update(
+                utils::fromBullet(transform.getOrigin()),
+                math::vec::IDENTITY_V3 // TODO: work with rotation
+        );
 
-//        LOG(DEBUG) << " x = " << transform.getOrigin().getX();
-        LOG(DEBUG) << "transform.position.Y = " << object->getGameObject()->getTransform()->getPosition().y;
-//        LOG(DEBUG) << " Z = " << transform.getOrigin().getZ();
+        LOG(DEBUG) << "transform.position.Y = "
+                   << transform.getOrigin().y();
     }
 }
 
