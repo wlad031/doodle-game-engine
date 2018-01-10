@@ -17,7 +17,10 @@ namespace json_dto {
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 template<typename JSON_IO>
-void json_io(JSON_IO& io, models::components::Transform& transform);
+void json_io(
+        JSON_IO& io,
+        std::shared_ptr<models::components::Transform>& transform
+);
 #pragma clang diagnostic pop
 }  // namespace json_dto
 
@@ -87,7 +90,7 @@ public:
     template<typename JSON_IO>
     friend void json_dto::json_io(
             JSON_IO& io,
-            models::components::Transform& transform
+            std::shared_ptr<models::components::Transform>& transform
     );
 
 private:
@@ -109,11 +112,14 @@ namespace json_dto {
 #pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 
 template<typename JSON_IO>
-void json_io(JSON_IO& io, models::components::Transform& transform) {
+void json_io(
+        JSON_IO& io,
+        std::shared_ptr<models::components::Transform>& transform
+) {
     io
-    & json::mandatory("position", transform._position)
-    & json::mandatory("rotation", transform._rotation)
-    & json::mandatory("scale", transform._scale);
+    & json::mandatory("position", transform->_position)
+    & json::mandatory("rotation", transform->_rotation)
+    & json::mandatory("scale", transform->_scale);
 }
 
 #pragma clang diagnostic pop

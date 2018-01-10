@@ -40,7 +40,10 @@ class PhysicObject;
 ///// ------------------------------ JSON serialization rule forward declaration
 namespace json_dto {
 template<typename JSON_IO>
-void json_io(JSON_IO& io, models::GameObject& gameObject);
+void json_io(
+        JSON_IO& io,
+        std::shared_ptr<models::GameObject>& gameObject
+);
 }  // namespace json_dto
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -55,6 +58,9 @@ public:
 
     ///// --------------------------------------------------------- constructors
     GameObject() = default;
+
+    GameObject(GameObject& that) :
+            _transform(that.getTransform()) {}
 
     ///// -------------------------------------------------------------- getters
 
@@ -146,7 +152,7 @@ public:
     template<typename JSON_IO>
     friend void json_dto::json_io(
             JSON_IO& io,
-            models::GameObject& gameObject
+            std::shared_ptr<models::GameObject>& gameObject
     );
 
 private:
@@ -184,11 +190,12 @@ namespace json_dto {
 #pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 
 template<typename JSON_IO>
-void json_io(JSON_IO& io, models::GameObject& gameObject) {
+void json_io(JSON_IO& io, std::shared_ptr<models::GameObject>& gameObject) {
     io
-    & json::mandatory("transform", gameObject._transform)
-    & json::mandatory("meshFilter", gameObject._meshFilter)
-    & json::mandatory("rigidBody", gameObject._rigidBody);
+    & json::mandatory("transform", gameObject->_transform)
+//    & json::mandatory("meshFilter", gameObject->_meshFilter)
+//    & json::mandatory("rigidBody", gameObject->_rigidBody)
+    ;
 }
 
 #pragma clang diagnostic pop

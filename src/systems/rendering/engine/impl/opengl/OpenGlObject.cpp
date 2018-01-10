@@ -1,15 +1,14 @@
 #include "OpenGlObject.h"
 
-#include <glbinding/gl/gl.h>
-
 namespace systems {
 namespace rendering {
 namespace engine {
 namespace opengl {
 
 OpenGlObject::OpenGlObject(
-        std::shared_ptr<systems::rendering::scene::components::MeshEntry> 
-        meshEntry
+        const std::shared_ptr<
+                systems::rendering::scene::components::MeshEntry
+        >& meshEntry
 ) {
 
     _nVertices      = meshEntry->getNVertices();
@@ -21,6 +20,13 @@ OpenGlObject::OpenGlObject(
     _hasTgsAndBitgs = meshEntry->hasTgsAndBitgs();
     _hasIndices     = meshEntry->hasIndices();
 
+    _vertices = meshEntry->getVertices();
+    _normals  = meshEntry->getNormals();
+    _texCoords= meshEntry->getTexCoords();
+    _tangents = meshEntry->getTgs();
+    _bitangents = meshEntry->getBitgs();
+    _indices = meshEntry->getIndices();
+
     gl::glGenVertexArrays(1, &_vao);
     gl::glBindVertexArray(_vao);
 
@@ -28,8 +34,10 @@ OpenGlObject::OpenGlObject(
         gl::glGenBuffers(1, &_vbo[Buffers::VERTEX_BUFFER]);
         gl::glBindBuffer(gl::GL_ARRAY_BUFFER, _vbo[Buffers::VERTEX_BUFFER]);
         gl::glBufferData(
-                gl::GL_ARRAY_BUFFER, 3 * _nVertices * sizeof(float),
-                &(meshEntry->getVertices()[0]), gl::GL_STATIC_DRAW
+                gl::GL_ARRAY_BUFFER,
+                3 * _nVertices * sizeof(float),
+                &(_vertices[0]),
+                gl::GL_STATIC_DRAW
         );
         gl::glBindBuffer(gl::GL_ARRAY_BUFFER, 0);
     }
@@ -38,8 +46,10 @@ OpenGlObject::OpenGlObject(
         gl::glGenBuffers(1, &_vbo[Buffers::TEXCOORD_BUFFER]);
         gl::glBindBuffer(gl::GL_ARRAY_BUFFER, _vbo[Buffers::TEXCOORD_BUFFER]);
         gl::glBufferData(
-                gl::GL_ARRAY_BUFFER, 2 * _nVertices * sizeof(float),
-                &(meshEntry->getTexCoords()[0]), gl::GL_STATIC_DRAW
+                gl::GL_ARRAY_BUFFER,
+                2 * _nVertices * sizeof(float),
+                &(_texCoords[0]),
+                gl::GL_STATIC_DRAW
         );
         gl::glBindBuffer(gl::GL_ARRAY_BUFFER, 0);
     }
@@ -48,8 +58,10 @@ OpenGlObject::OpenGlObject(
         gl::glGenBuffers(1, &_vbo[Buffers::NORMAL_BUFFER]);
         gl::glBindBuffer(gl::GL_ARRAY_BUFFER, _vbo[Buffers::NORMAL_BUFFER]);
         gl::glBufferData(
-                gl::GL_ARRAY_BUFFER, 3 * _nVertices * sizeof(float),
-                &(meshEntry->getNormals()[0]), gl::GL_STATIC_DRAW
+                gl::GL_ARRAY_BUFFER,
+                3 * _nVertices * sizeof(float),
+                &(_normals[0]),
+                gl::GL_STATIC_DRAW
         );
         gl::glBindBuffer(gl::GL_ARRAY_BUFFER, 0);
     }
@@ -58,16 +70,20 @@ OpenGlObject::OpenGlObject(
         gl::glGenBuffers(1, &_vbo[Buffers::TANGENT_BUFFER]);
         gl::glBindBuffer(gl::GL_ARRAY_BUFFER, _vbo[Buffers::TANGENT_BUFFER]);
         gl::glBufferData(
-                gl::GL_ARRAY_BUFFER, 3 * _nVertices * sizeof(float),
-                &(meshEntry->getTgs()[0]), gl::GL_STATIC_DRAW
+                gl::GL_ARRAY_BUFFER,
+                3 * _nVertices * sizeof(float),
+                &(_tangents[0]),
+                gl::GL_STATIC_DRAW
         );
         gl::glBindBuffer(gl::GL_ARRAY_BUFFER, 0);
 
         gl::glGenBuffers(1, &_vbo[Buffers::BITANGENT_BUFFER]);
         gl::glBindBuffer(gl::GL_ARRAY_BUFFER, _vbo[Buffers::BITANGENT_BUFFER]);
         gl::glBufferData(
-                gl::GL_ARRAY_BUFFER, 3 * _nVertices * sizeof(float),
-                &(meshEntry->getBitgs()[0]), gl::GL_STATIC_DRAW
+                gl::GL_ARRAY_BUFFER,
+                3 * _nVertices * sizeof(float),
+                &(_bitangents[0]),
+                gl::GL_STATIC_DRAW
         );
         gl::glBindBuffer(gl::GL_ARRAY_BUFFER, 0);
     }
@@ -79,8 +95,10 @@ OpenGlObject::OpenGlObject(
                 _vbo[Buffers::INDEX_BUFFER]
         );
         gl::glBufferData(
-                gl::GL_ELEMENT_ARRAY_BUFFER, 3 * _nFaces * sizeof(uint),
-                &(meshEntry->getIndices()[0]), gl::GL_STATIC_DRAW
+                gl::GL_ELEMENT_ARRAY_BUFFER,
+                3 * _nFaces * sizeof(uint),
+                &(_indices[0]),
+                gl::GL_STATIC_DRAW
         );
         gl::glBindBuffer(gl::GL_ELEMENT_ARRAY_BUFFER, 0);
     }
@@ -89,8 +107,9 @@ OpenGlObject::OpenGlObject(
 }
 
 void OpenGlObject::render(
-        std::shared_ptr<systems::rendering::engine::opengl::OpenGlProgram> 
-        shaderProgram
+        const std::shared_ptr<
+                systems::rendering::engine::opengl::OpenGlProgram
+        >& shaderProgram
 ) {
     unsigned int positionAttributeId  = 0;
     unsigned int texCoordAttributeId  = 0;
@@ -122,6 +141,7 @@ void OpenGlObject::render(
                 0,
                 nullptr
         );
+//        gl::glBindBuffer(gl::GL_ARRAY_BUFFER, 0);
     }
 
     if (_hasTexCoords) {
@@ -135,6 +155,7 @@ void OpenGlObject::render(
                 0,
                 nullptr
         );
+//        gl::glBindBuffer(gl::GL_ARRAY_BUFFER, 0);
     }
 
     if (_hasNormals) {
@@ -148,6 +169,7 @@ void OpenGlObject::render(
                 0,
                 nullptr
         );
+//        gl::glBindBuffer(gl::GL_ARRAY_BUFFER, 0);
     }
 
     if (_hasTgsAndBitgs) {
@@ -172,13 +194,17 @@ void OpenGlObject::render(
                 0,
                 nullptr
         );
+
+//        gl::glBindBuffer(gl::GL_ARRAY_BUFFER, 0);
     }
 
-    if (_hasIndices)
+    if (_hasIndices) {
         gl::glBindBuffer(
                 gl::GL_ELEMENT_ARRAY_BUFFER,
                 _vbo[Buffers::INDEX_BUFFER]
         );
+//        gl::glBindBuffer(gl::GL_ELEMENT_ARRAY_BUFFER, 0);
+    }
 
     gl::glDrawElements(
             gl::GL_TRIANGLES,

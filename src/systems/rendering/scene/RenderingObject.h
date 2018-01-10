@@ -20,21 +20,21 @@ class RenderingObject {
 public:
 
     RenderingObject(
-            std::shared_ptr<models::GameObject> gameObject,
-            std::unique_ptr<components::Mesh> mesh
-    ) : _gameObject(std::move(gameObject)),
-        _mesh(std::move(mesh)) {
+            const std::shared_ptr<models::GameObject>& gameObject,
+            const std::shared_ptr<components::Mesh>& mesh
+    ) : _gameObject(gameObject),
+        _mesh(mesh) {
     }
 
     const std::shared_ptr<models::GameObject>&
     getGameObject() const { return _gameObject; }
 
-    const std::unique_ptr<components::Mesh>&
+    const std::shared_ptr<components::Mesh>&
     getMesh() const { return _mesh; }
 
 private:
     std::shared_ptr<models::GameObject> _gameObject;
-    std::unique_ptr<components::Mesh>   _mesh;
+    std::shared_ptr<components::Mesh>   _mesh;
 };
 
 }  // namespace scene

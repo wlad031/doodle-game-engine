@@ -14,8 +14,9 @@ namespace scene {
 class RenderingLight {
 public:
 
-    RenderingLight(std::shared_ptr<models::GameObject> gameObject) :
-            _gameObject(std::move(gameObject)) {}
+    explicit RenderingLight(
+            const std::shared_ptr<models::GameObject>& gameObject
+    ) : _gameObject(gameObject) {}
 
     const std::shared_ptr<models::GameObject>&
     getGameObject() const { return _gameObject; }

@@ -14,8 +14,9 @@ namespace scene {
 class RenderingCamera {
 public:
 
-    RenderingCamera(std::shared_ptr<models::GameObject> gameObject) :
-            _gameObject(std::move(gameObject)) {}
+    explicit RenderingCamera(
+            const std::shared_ptr<models::GameObject>& gameObject
+    ) : _gameObject(gameObject) {}
 
     const std::shared_ptr<models::GameObject>&
     getGameObject() const { return _gameObject; }

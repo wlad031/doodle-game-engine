@@ -8,7 +8,11 @@
 
 namespace models {
 
-class AbstractModel : public Named, Tagged, Layered, Identificated {
+class AbstractModel :
+        public Named,
+        public Tagged,
+        public Layered,
+        public Identificated {
 };
 
 } // namespace models

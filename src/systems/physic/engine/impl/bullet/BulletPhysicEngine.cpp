@@ -2,8 +2,6 @@
 
 #include <thread>
 
-#include "common/Logger.hpp"
-
 #include "systems/physic/scene/PhysicScene.h"
 
 namespace systems {
@@ -55,8 +53,7 @@ void BulletPhysicEngine::simulate() {
                 math::vec::IDENTITY_V3 // TODO: work with rotation
         );
 
-        LOG(DEBUG) << "transform.position.Y = "
-                   << transform.getOrigin().y();
+        LOGGER->info("transform.position.Y = %f", transform.getOrigin().y());
     }
 }
 

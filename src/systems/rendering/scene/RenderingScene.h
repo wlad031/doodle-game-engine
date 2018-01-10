@@ -2,10 +2,11 @@
 #define DOODLEGAMEENGINE_SYSTEMS_RENDERING_SCENE_RENDERINGSCENE_H
 
 #include <vector>
+#include <iostream>
 
-#include "RenderingObject.h"
 #include "RenderingCamera.h"
 #include "RenderingLight.h"
+#include "RenderingObject.h"
 
 namespace systems {
 namespace rendering {
@@ -32,7 +33,9 @@ public:
 
 private:
 
-    RenderingScene() = default;
+    RenderingScene() {
+        std::cout << "RenderingScene constructor called" << std::endl;
+    }
 
     std::vector<std::shared_ptr<RenderingObject>> _objects;
     std::vector<std::shared_ptr<RenderingCamera>> _cameras;

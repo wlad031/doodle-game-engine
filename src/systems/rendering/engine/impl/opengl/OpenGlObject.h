@@ -30,13 +30,15 @@ class OpenGlObject {
 public:
 
     explicit OpenGlObject(
-            std::shared_ptr<systems::rendering::scene::components::MeshEntry> 
-            meshEntry
+            const std::shared_ptr<
+                    systems::rendering::scene::components::MeshEntry
+            >& meshEntry
     );
 
     void render(
-            std::shared_ptr<systems::rendering::engine::opengl::OpenGlProgram> 
-            shaderProgram
+            const std::shared_ptr<
+                    systems::rendering::engine::opengl::OpenGlProgram
+            >& shaderProgram
     );
 
 private:
@@ -47,6 +49,13 @@ private:
     unsigned int _nElements;
     unsigned int _nVertices;
     unsigned int _nFaces;
+
+    std::vector<float> _vertices;
+    std::vector<float> _normals;
+    std::vector<float> _tangents;
+    std::vector<float> _bitangents;
+    std::vector<float> _texCoords;
+    std::vector<unsigned int> _indices;
 
     bool _hasVertices;
     bool _hasTexCoords;

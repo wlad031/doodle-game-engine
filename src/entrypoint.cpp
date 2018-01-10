@@ -60,10 +60,6 @@ public:
     virtual void run() override {
         srand(time(NULL));
 
-        auto manager = standalone::GlfwWindowManager::instance();
-        manager.init();
-        manager.window();
-
 //        console::Shell shell;
 //
 //        shell
@@ -87,20 +83,14 @@ public:
 //                            out << "COMMAND HELLO -> " << input[0] << "\n";
 //                        }
 //                );
+//            auto s = serialize::JsonSerializer::serialize(gameObject, true);
+//            LOG(INFO) << s;
+//
+//            auto go1 = serialize::JsonSerializer::deserialize<std::shared_ptr<models::GameObject>>(s);
+//            LOG(INFO) << serialize::JsonSerializer::serialize(go1, true);
 
-//        auto go = models::GameObject();
-//        go.setTransform(
-//                models::components::Transform(
-//                        math::vec::v3{1.0, 2.0, 3.1},
-//                        math::vec::v3{5, 1, 2},
-//                        math::vec::v3{10}
-//                ));
-//
-//        auto s = serialize::JsonSerializer::serialize(go);
-//        LOG(INFO) << s;
-//
-//        auto go1 = serialize::JsonSerializer::deserialize<models::GameObject>(s);
-//        LOG(INFO) << serialize::JsonSerializer::serialize(go1);
+//        auto renderingScene = systems::rendering::scene::RenderingScene::instance();
+//        auto physicScene = systems::physic::scene::PhysicScene::instance();
 
         {
             auto gameObject = std::make_shared<models::GameObject>();
@@ -170,19 +160,22 @@ public:
             gameObject->setBoxColliders({boxCollider});
             gameObject->setRigidBody(rigidBody);
         }
-        
-        auto renderSystem = systems::rendering::RenderSystem::instance();
-        auto physicSystem = systems::physic::PhysicSystem::instance();
 
         bool exited = false;
-
         auto thread2 = std::thread([&]() {
+            auto manager = standalone::GlfwWindowManager::instance();
+            manager.init();
+            manager.window();
             glbinding::Binding::useCurrentContext();
-            manager.loop(renderSystem.getTask());
+            manager.loop(
+                    [&]() {},
+                    systems::rendering::RenderSystem::instance().getTask()
+            );
             exited = true;
         });
+
         auto thread3 = std::thread([&]() {
-            auto task = physicSystem.getTask();
+            auto task = systems::physic::PhysicSystem::instance().getTask();
             while (!exited) task();
         });
 
@@ -223,7 +216,9 @@ int main(int argc, const char** argv) {
     START_EASYLOGGINGPP(argc, argv);
 
     el::Configurations conf(std::string(PROJECT_DIRECTORY) + "logging.conf");
-    el::Loggers::reconfigureLogger("default", conf);
+    el::Loggers::getLogger("Physic");
+    el::Loggers::getLogger("OpenGL");
+//    el::Loggers::reconfigureLogger("default", conf);
     el::Loggers::addFlag(el::LoggingFlag::ColoredTerminalOutput);
     el::Loggers::reconfigureAllLoggers(conf);
 

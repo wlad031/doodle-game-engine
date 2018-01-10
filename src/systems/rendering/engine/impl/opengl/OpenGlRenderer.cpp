@@ -16,49 +16,72 @@ namespace engine {
 namespace opengl {
 
 OpenGlRenderer::OpenGlRenderer() {
-    glbinding::Binding::initialize();
+    LOGGER = std::shared_ptr<el::Logger>(
+            el::Loggers::getLogger("OpenGL")
+    );
+
+    glbinding::Binding::initialize(false);
 
     auto ver = std::string("Available OpenGL versions: ");
     for (auto&& v : glbinding::Meta::versions()) ver += v.toString() + ", ";
-    LOG(DEBUG) << ver;
-    LOG(INFO) << "OpenGL Version:  " << glbinding::ContextInfo::version();
-    LOG(INFO) << "OpenGL Vendor:   " << glbinding::ContextInfo::vendor();
-    LOG(INFO) << "OpenGL Renderer: " << glbinding::ContextInfo::renderer();
-    LOG(INFO) << "OpenGL Revision: " << glbinding::Meta::glRevision();
+    LOGGER->debug(ver);
+    LOGGER->info("OpenGL Version:  %s", glbinding::ContextInfo::version());
+    LOGGER->info("OpenGL Vendor:   %s", glbinding::ContextInfo::vendor());
+    LOGGER->info("OpenGL Renderer: %s", glbinding::ContextInfo::renderer());
+    LOGGER->info("OpenGL Revision: %s", glbinding::Meta::glRevision());
 
     glbinding::setCallbackMaskExcept(
-            glbinding::CallbackMask::After,
+            glbinding::CallbackMask::After |
+                    glbinding::CallbackMask::ParametersAndReturnValue,
             {"glGetError"}
     );
     glbinding::setAfterCallback(
-            [](const glbinding::FunctionCall&) {
+            [this](const glbinding::FunctionCall& call) {
+                // TODO: refactor
+                std::string log(call.function->name());
+                log += "(";
+                for (auto i = 0; i < call.parameters.size(); ++i) {
+                    log += call.parameters[i]->asString();
+                    if (i < call.parameters.size() - 1) log += ", ";
+                }
+                log += ")";
+
+                if (call.returnValue != nullptr) {
+                    log += " -> ";
+                    log += call.returnValue->asString();
+                }
+
+                LOGGER->trace(log);
+
                 const auto error = gl::glGetError();
                 if (error != gl::GL_NO_ERROR)
-                    LOG(ERROR) << "OpenGL error: " << std::hex << error;
+                    LOG(ERROR) << "OpenGL error: " << error;
             }
     );
 
     glbinding::Binding::CreateProgram.setAfterCallback(
-            [](gl::GLuint id) {
-                LOG(INFO) << "Created OpenGL program: " << id;
+            [this](gl::GLuint id) {
+                LOGGER->info("Created OpenGL program: %d", id);
             }
     );
     glbinding::Binding::CreateShader.setAfterCallback(
-            [](gl::GLuint id, gl::GLenum /*type*/) {
-                LOG(INFO) << "Created OpenGL shader: " << id;
+            [this](gl::GLuint id, gl::GLenum /*type*/) {
+                LOGGER->info("Created OpenGL shader: %d", id);
             }
     );
     glbinding::Binding::DeleteProgram.setAfterCallback(
-            [](gl::GLuint id) {
-                LOG(INFO) << "Deleted OpenGL program: " << id;
+            [this](gl::GLuint id) {
+                LOGGER->info("Deleted OpenGL program: %d", id);
             }
     );
     glbinding::Binding::DeleteShader.setAfterCallback(
-            [](gl::GLuint id) {
-                LOG(INFO) << "Deleted OpenGL shader: " << id;
+            [this](gl::GLuint id) {
+                LOGGER->info("Deleted OpenGL shader: %d", id);
             }
     );
+}
 
+void OpenGlRenderer::initializeObjects() {
     auto rObjects = systems::rendering::scene::RenderingScene::instance()
             .getObjects();
     auto cameras  = systems::rendering::scene::RenderingScene::instance()
@@ -72,9 +95,11 @@ OpenGlRenderer::OpenGlRenderer() {
 
             if (_objects.find(renderingObject) == _objects.end())
                 _objects[renderingObject] =
-                        std::vector<OpenGlObject>();
+                        std::vector<std::shared_ptr<OpenGlObject>>();
 
-            _objects[renderingObject].emplace_back(meshEntry);
+            auto o = std::make_shared<OpenGlObject>(meshEntry);
+
+            _objects[renderingObject].push_back(o);
         }
 
     }

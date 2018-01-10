@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
 
-reset && cd build && cmake .. && make && ./bin/DoodleGameEngine && cd -
+reset
+
+if [ ! -d build ]; then
+    mkdir build
+fi
+
+cd build && cmake .. && make && ./bin/DoodleGameEngine && cd -

@@ -21,7 +21,9 @@ public:
     std::function<void()> getTask() override;
 
 private:
-    RenderSystem() = default;
+    RenderSystem() {
+        _renderer.initializeObjects();
+    }
 
     engine::opengl::forward::OpenGlForwardRenderer _renderer;
 };

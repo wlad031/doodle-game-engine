@@ -1,6 +1,7 @@
 #include "RenderingCamera.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <iostream>
 
 namespace systems {
 namespace rendering {
@@ -12,7 +13,9 @@ const math::mat::m4& RenderingCamera::getViewMatrix() {
     auto center = math::vec::NULL_V3;
     auto up     = math::vec::v3(0.0, 1.0, 0.0);
 
-    return glm::lookAt(eye, eye + center, up);
+    auto m = glm::lookAt(eye, eye + center, up); // TODO: fix this
+    std::cout << m[1][1];
+    return m;
 }
 
 const math::mat::m4& RenderingCamera::getProjectionMatrix() {

@@ -17,11 +17,11 @@ void OpenGlForwardRenderer::render() {
 
         passUniformMatrix4fv(
                 _mainShader->getUniform(MainShader::Uniform::MATRIX_VIEW),
-                camera->getViewMatrix()
+                math::mat::m4(1.0) //camera->getViewMatrix()
         );
         passUniformMatrix4fv(
                 _mainShader->getUniform(MainShader::Uniform::MATRIX_PROJECTION),
-                camera->getProjectionMatrix()
+                math::mat::m4(1.0) //camera->getProjectionMatrix()
         );
 
         for (auto&& light : _directionalLights) {
@@ -34,24 +34,24 @@ void OpenGlForwardRenderer::render() {
 
             passUniform4fv(
                     _mainShader->getUniform(MainShader::Uniform::LIGHT_AMBIENT),
-                    math::color::rgb2rgba(gameObject->getLight()->getColor().ambient)
+                    math::vec::v4(1.0) //math::color::rgb2rgba(gameObject->getLight()->getColor().ambient)
             );
 
             passUniform4fv(
                     _mainShader->getUniform(MainShader::Uniform::LIGHT_DIFFUSE),
-                    math::color::rgb2rgba(gameObject->getLight()->getColor().diffuse)
+                    math::vec::v4(1.0) //math::color::rgb2rgba(gameObject->getLight()->getColor().diffuse)
             );
 
             passUniform4fv(
                     _mainShader->getUniform(MainShader::Uniform::LIGHT_SPECULAR),
-                    math::color::rgb2rgba(gameObject->getLight()->getColor().specular)
+                    math::vec::v4(1.0) //math::color::rgb2rgba(gameObject->getLight()->getColor().specular)
             );
 
             for (auto&& object : _objects) {
                 auto renderingObject = object.first;
                 auto openGlObject    = object.second;
 
-                auto transformMatrix = math::mat::m4(1.0);
+                auto transformMatrix = math::mat::m4(1.0); // TODO: implement
 
                 passUniformMatrix4fv(
                         _mainShader->getUniform(MainShader::Uniform::MATRIX_MODEL),
@@ -59,7 +59,7 @@ void OpenGlForwardRenderer::render() {
                 );
 
                 for (auto&& graphicObject : openGlObject) {
-                    graphicObject.render(_mainShader);
+                    graphicObject->render(_mainShader);
                 }
             }
         }

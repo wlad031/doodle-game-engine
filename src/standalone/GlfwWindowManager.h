@@ -17,9 +17,14 @@ public:
         return _instance;
     }
 
+    ~GlfwWindowManager();
+
     void init();
     void window();
-    void loop(std::function<void()> function);
+    void loop(
+            std::function<void()> initialFunction,
+            std::function<void()> loopFunction
+    );
 
     void setKeyboardCallback(
             std::function<void(int, int, int, int)> function
