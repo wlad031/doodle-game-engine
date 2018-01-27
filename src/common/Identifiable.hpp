@@ -1,5 +1,5 @@
-#ifndef DOODLEGAMEENGINE_COMMON_IDENTIFICATED_HPP
-#define DOODLEGAMEENGINE_COMMON_IDENTIFICATED_HPP
+#ifndef DOODLEGAMEENGINE_COMMON_IDENTIFIABLE_HPP
+#define DOODLEGAMEENGINE_COMMON_IDENTIFIABLE_HPP
 
 #include <string>
 
@@ -11,12 +11,12 @@
 /////               Abstract class for objects that have ID                /////
 ////////////////////////////////////////////////////////////////////////////////
 
-///// ============================================================ Identificated
-class Identificated {
+///// ============================================================ Identifiable
+class Identifiable {
 public:
 
     ///// --------------------------------------------------------- constructors
-    Identificated() : _uuid(boost::uuids::random_generator()()) {};
+    Identifiable() : _uuid(boost::uuids::random_generator()()) {}
 
     ///// -------------------------------------------------------------- getters
     const std::string& getId() const { return to_string(_uuid); }
@@ -25,4 +25,4 @@ private:
     boost::uuids::uuid _uuid;
 };
 
-#endif //DOODLEGAMEENGINE_COMMON_IDENTIFICATED_HPP
+#endif //DOODLEGAMEENGINE_COMMON_IDENTIFIABLE_HPP

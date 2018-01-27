@@ -9,9 +9,9 @@ namespace scene {
 void PhysicScene::add(
         const std::shared_ptr<models::GameObject>& gameObject
 ) {
-    LOG(INFO) << "PhysicScene :: adding object "
+//    LOG(INFO) << "PhysicScene :: adding object "
               //              << "#" << gameObject->getId() << " "
-              << "<" << gameObject->getName() << ">";
+//              << "<" << gameObject->getName() << ">";
 
     if (gameObject->isPhysic()) {
         auto physicObject = std::make_shared<PhysicObject>(gameObject);
@@ -19,7 +19,7 @@ void PhysicScene::add(
         gameObject->setPhysicObject(physicObject);
         _objects.push_back(physicObject);
 
-        LOG(INFO) << " -- physic object ";
+//        LOG(INFO) << " -- physic object ";
     }
 }
 

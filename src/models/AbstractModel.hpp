@@ -1,7 +1,7 @@
 #ifndef DOODLEGAMEENGINE_MODELS_ABSTRACTMODEL_HPP
 #define DOODLEGAMEENGINE_MODELS_ABSTRACTMODEL_HPP
 
-#include "common/Identificated.hpp"
+#include "common/Identifiable.hpp"
 #include "common/Layered.hpp"
 #include "common/Named.hpp"
 #include "common/Tagged.hpp"
@@ -12,7 +12,7 @@ class AbstractModel :
         public Named,
         public Tagged,
         public Layered,
-        public Identificated {
+        public Identifiable {
 };
 
 } // namespace models

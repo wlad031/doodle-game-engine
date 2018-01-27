@@ -3,6 +3,6 @@
 namespace standalone {
 
     void StandaloneEngineRunner::run() {
-        LOG(INFO) << "StandaloneEngineRunner: Hello, world!";
+//        LOG(INFO) << "StandaloneEngineRunner: Hello, world!";
     }
 }

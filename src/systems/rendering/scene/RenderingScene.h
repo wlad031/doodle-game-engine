@@ -34,7 +34,7 @@ public:
 private:
 
     RenderingScene() {
-        std::cout << "RenderingScene constructor called" << std::endl;
+//        std::cout << "RenderingScene constructor called" << std::endl;
     }
 
     std::vector<std::shared_ptr<RenderingObject>> _objects;

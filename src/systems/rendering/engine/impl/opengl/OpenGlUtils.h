@@ -10,7 +10,7 @@ namespace opengl {
 namespace utils {
 
 ///// --------------------------------------------------------------- getInfoLog
-const std::string& getInfoLog(uint id);
+const std::string& getInfoLog(unsigned int id);
 
 } // namespace utils
 }  // namespace opengl

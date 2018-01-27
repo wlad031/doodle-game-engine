@@ -21,7 +21,7 @@ namespace schedule {
             }
 
             if (ready) {
-                LOG(INFO) << "Scheduler : new cycle";
+//                LOG(INFO) << "Scheduler : new cycle";
                 futures.clear();
                 std::transform(_tasks.begin(), _tasks.end(), std::back_inserter(futures), pFunction);
             }

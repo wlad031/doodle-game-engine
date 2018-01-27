@@ -42,8 +42,8 @@ void OpenGlShader::compile() {
 
     gl::glGetShaderiv(_id, gl::GL_COMPILE_STATUS, &_compileStatus);
     if (_compileStatus == gl::GL_FALSE) {
-        LOG(ERROR) << std::string("Error compiling shader:\n")
-                      + utils::getInfoLog(_id);
+//        LOG(ERROR) << std::string("Error compiling shader:\n")
+//                      + utils::getInfoLog(_id);
         gl::glDeleteShader(_id);
     }
 }

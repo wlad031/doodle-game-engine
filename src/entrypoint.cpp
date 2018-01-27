@@ -3,7 +3,10 @@
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "CannotResolve"
 #define GLFW_INCLUDE_NONE
+#define ELPP_THREAD_SAFE
+#undef ELPP_SIMPLE_LOG
 #include <easylogging++.h>
+#undef ELPP_SIMPLE_LOG
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 #include "common/patterns/Observer.hpp"
@@ -29,7 +32,7 @@ INITIALIZE_EASYLOGGINGPP
 class A : public patterns::Observer {
 public:
     virtual void update() override {
-        LOG(INFO) << "A: I was updated!";
+//        LOG(INFO) << "A: I was updated!";
     }
 };
 
@@ -38,7 +41,7 @@ public:
     B(int a) : a(a) {}
 
     void kek() {
-        LOG(INFO) << a << " B: kek!";
+//        LOG(INFO) << a << " B: kek!";
         notify();
     }
 
@@ -49,11 +52,6 @@ namespace systems::rendering::engine::opengl {
 
     class OpenGlObject;
 }
-
-// TODO: 1. refactor #ifdef compile variables (PROJECT_PATHTOCLASS_EXT) done
-// TODO: 2. refactor code style (common dir except ThreadPool, Scheduler classes is good)
-// TODO: 3. refactor reference storing (common dir except Observer, ThreadPool, Scheduler classes is good)
-// TODO: 4. ThreadPool, Scheduler, Logger
 
 class TestRunner : public Runnable {
 public:
@@ -230,5 +228,7 @@ int main(int argc, const char** argv) {
         LOG(ERROR) << e.what();
         return 1;
     }
+
+    return 0;
 }
 #pragma clang diagnostic pop

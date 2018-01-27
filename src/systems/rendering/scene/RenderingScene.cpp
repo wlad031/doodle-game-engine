@@ -11,9 +11,9 @@ namespace scene {
 void RenderingScene::add(
         const std::shared_ptr<models::GameObject>& gameObject
 ) {
-    LOG(INFO) << "RenderingScene :: adding object "
+//    LOG(INFO) << "RenderingScene :: adding object "
 //              << "#" << gameObject->getId() << " "
-              << "<" << gameObject->getName() << ">";
+//              << "<" << gameObject->getName() << ">";
 
     if (gameObject->canRender()) {
         auto mesh = MeshLoader::instance()
@@ -27,21 +27,21 @@ void RenderingScene::add(
         gameObject->setRenderingObject(renderingObject);
         _objects.push_back(renderingObject);
 
-        LOG(INFO) << " -- render object ";
+//        LOG(INFO) << " -- render object ";
     }
 
     if (gameObject->isCamera()) {
         auto camera = std::make_shared<RenderingCamera>(gameObject);
         _cameras.push_back(camera);
 
-        LOG(INFO) << " -- camera ";
+//        LOG(INFO) << " -- camera ";
     }
 
     if (gameObject->isLight()) {
         auto lightSource = std::make_shared<RenderingLight>(gameObject);
         _lights.push_back(lightSource);
 
-        LOG(INFO) << " -- light source ";
+//        LOG(INFO) << " -- light source ";
     }
 }
 

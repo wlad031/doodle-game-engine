@@ -14,7 +14,7 @@ void GlfwWindowManager::init() {
     int glfwInitCode = glfwInit();
 
     glfwSetErrorCallback([](int code, const char* msg) {
-        LOG(ERROR) << "GLFW error: code = " << code << "; " << msg;
+//        LOG(ERROR) << "GLFW error: code = " << code << "; " << msg;
     });
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -25,8 +25,8 @@ void GlfwWindowManager::init() {
     if (glfwInitCode != 1) throw GlfwException(glfwInitCode);
 
     glfwGetVersion(&_version.major, &_version.minor, &_version.rev);
-    LOG(INFO) << boost::format("GLFW version: %1%.%2%.%3%")
-                 % _version.major % _version.minor % _version.rev;
+//    LOG(INFO) << boost::format("GLFW version: %1%.%2%.%3%")
+//                 % _version.major % _version.minor % _version.rev;
 }
 
 void GlfwWindowManager::window() {

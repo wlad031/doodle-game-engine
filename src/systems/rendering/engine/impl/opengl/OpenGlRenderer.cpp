@@ -25,10 +25,10 @@ OpenGlRenderer::OpenGlRenderer() {
     auto ver = std::string("Available OpenGL versions: ");
     for (auto&& v : glbinding::Meta::versions()) ver += v.toString() + ", ";
     LOGGER->debug(ver);
-    LOGGER->info("OpenGL Version:  %s", glbinding::ContextInfo::version());
-    LOGGER->info("OpenGL Vendor:   %s", glbinding::ContextInfo::vendor());
-    LOGGER->info("OpenGL Renderer: %s", glbinding::ContextInfo::renderer());
-    LOGGER->info("OpenGL Revision: %s", glbinding::Meta::glRevision());
+//    LOGGER->info("OpenGL Version:  %s", glbinding::ContextInfo::version());
+//    LOGGER->info("OpenGL Vendor:   %s", glbinding::ContextInfo::vendor());
+//    LOGGER->info("OpenGL Renderer: %s", glbinding::ContextInfo::renderer());
+//    LOGGER->info("OpenGL Revision: %s", glbinding::Meta::glRevision());
 
     glbinding::setCallbackMaskExcept(
             glbinding::CallbackMask::After |
@@ -55,7 +55,7 @@ OpenGlRenderer::OpenGlRenderer() {
 
                 const auto error = gl::glGetError();
                 if (error != gl::GL_NO_ERROR)
-                    LOG(ERROR) << "OpenGL error: " << error;
+                    LOGGER->error("OpenGL error: %s", error);
             }
     );
 

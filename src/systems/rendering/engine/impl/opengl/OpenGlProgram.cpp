@@ -45,8 +45,8 @@ void OpenGlProgram::link() {
     gl::glGetProgramiv(_id, gl::GL_LINK_STATUS, &_status);
 
     if (_status == gl::GL_FALSE) {
-        LOG(ERROR) << std::string("Error linking shader program:\n")
-                      + utils::getInfoLog(_id);
+//        LOG(ERROR) << std::string("Error linking shader program:\n")
+//                      + utils::getInfoLog(_id);
         gl::glDeleteProgram(_id);
     }
 }

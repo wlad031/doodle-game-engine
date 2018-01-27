@@ -3,6 +3,6 @@
 namespace editor {
 
     void EditorRunner::run() {
-        LOG(INFO) << "EditorRunner: Hello, world!";
+//        LOG(INFO) << "EditorRunner: Hello, world!";
     }
 }

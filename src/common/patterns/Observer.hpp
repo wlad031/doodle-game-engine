@@ -1,8 +1,6 @@
 #ifndef DOODLEGAMEENGINE_COMMON_PATTERNS_OBSERVER_HPP
 #define DOODLEGAMEENGINE_COMMON_PATTERNS_OBSERVER_HPP
 
-#include <bits/refwrap.h>
-
 #include <vector>
 
 namespace patterns {
